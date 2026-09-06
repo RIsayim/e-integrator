@@ -1,0 +1,7 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+import Scene from '../../components/Scene.astro';
+import { projects } from '../../data/projects';
+---
+<BaseLayout title="Projects — Design & Co"><section class="page-hero wrap"><div><p class="eyebrow">(portfolio)</p><h1>A Curated Collection of Refined Interior Spaces</h1><p class="lede">Explore our full portfolio—interiors crafted between 2018 and 2025, each designed with precision, character, and a clear sense of purpose.</p></div><Scene tone="charcoal" label="Portfolio hero visual" /></section><section class="section wrap"><div class="list-title"><h2>All Projects</h2><span>(0{projects.length})</span></div><div class="projects-grid projects-grid--all">{projects.map((project) => <ProjectCard project={project} />)}</div></section><section class="cta wrap"><div><p class="eyebrow">(start a project)</p><h2>Let’s create something timeless</h2><p>Have a project in mind? Let’s bring your vision to life.</p><a class="button button--light" href="/#contact">Start your project <span>↗</span></a></div></section></BaseLayout>

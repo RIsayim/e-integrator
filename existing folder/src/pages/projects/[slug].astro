@@ -1,0 +1,10 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Scene from '../../components/Scene.astro';
+import { projects } from '../../data/projects';
+export function getStaticPaths() { return projects.map((project) => ({ params: { slug: project.slug }, props: { project } })); }
+const { project } = Astro.props;
+const index = projects.findIndex((item) => item.slug === project.slug);
+const previous = projects[index - 1]; const next = projects[index + 1];
+---
+<BaseLayout title={`${project.title} — Design & Co`}><section class="project-hero wrap"><div><p class="eyebrow">{project.location}</p><h1>{project.title}</h1></div><Scene tone={project.scene} label={`${project.title} hero visual`} /></section><section class="project-detail wrap"><div><p class="eyebrow">(project description)</p><p class="detail-copy">{project.description}</p></div><Scene tone={project.scene} label={`${project.title} interior showcase`} /><dl><dt>Category</dt><dd>{project.category}</dd><dt>Client</dt><dd>{project.client}</dd><dt>Year</dt><dd>{project.year}</dd><dt>Services</dt><dd>{project.services.map((service) => <span class="service-tag">{service}</span>)}</dd></dl></section><section class="gallery wrap">{Array.from({ length: 6 }).map((_, index) => <Scene tone={index % 2 ? project.scene : 'sand'} label={`${project.title} gallery visual ${index + 1}`} />)}</section><nav class="project-pagination wrap" aria-label="Project navigation">{previous ? <a href={`/projects/${previous.slug}/`}>← Previous</a> : <span />}{next ? <a href={`/projects/${next.slug}/`}>Next →</a> : <span />}</nav><section class="cta wrap"><div><p class="eyebrow">(start a project)</p><h2>Let’s create something timeless</h2><p>Have a project in mind? Let’s bring your vision to life.</p><a class="button button--light" href="/#contact">Start your project <span>↗</span></a></div></section></BaseLayout>

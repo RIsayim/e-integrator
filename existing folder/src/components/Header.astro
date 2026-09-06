@@ -1,0 +1,24 @@
+---
+const links = [
+  { href: '/projects/', label: 'Projects' },
+  { href: '/#about', label: 'About' },
+  { href: '/#services', label: 'Services' },
+  { href: '/#contact', label: 'Contact' }
+];
+---
+<header class="site-header">
+  <a class="brand" href="/" aria-label="Design and Co home">Design<span>&amp;</span>Co</a>
+  <button class="menu-toggle" aria-label="Open navigation" aria-expanded="false"><span></span><span></span></button>
+  <nav aria-label="Primary navigation">
+    {links.map((link) => <a href={link.href}>{link.label}</a>)}
+  </nav>
+</header>
+<script>
+  const button = document.querySelector('.menu-toggle');
+  const nav = document.querySelector('.site-header nav');
+  button?.addEventListener('click', () => {
+    const opened = button.getAttribute('aria-expanded') === 'true';
+    button.setAttribute('aria-expanded', String(!opened));
+    nav?.classList.toggle('is-open', !opened);
+  });
+</script>
