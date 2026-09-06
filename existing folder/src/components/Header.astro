@@ -1,4 +1,5 @@
 ---
+import logo from '../assets/reference/TwSoZvtOBetv8V4O9j8pfUnTsM.svg?url';
 const links = [
   { href: '/projects/', label: 'Projects' },
   { href: '/#about', label: 'About' },
@@ -7,18 +8,28 @@ const links = [
 ];
 ---
 <header class="site-header">
-  <a class="brand" href="/" aria-label="Design and Co home">Design<span>&amp;</span>Co</a>
-  <button class="menu-toggle" aria-label="Open navigation" aria-expanded="false"><span></span><span></span></button>
-  <nav aria-label="Primary navigation">
-    {links.map((link) => <a href={link.href}>{link.label}</a>)}
-  </nav>
+  <div class="site-header__inner">
+    <a class="brand" href="/" aria-label="Design and Co home"><img src={logo} alt="Design &amp; Co" /></a>
+    <button class="menu-toggle" aria-label="Open navigation" aria-expanded="false"><span class="menu-toggle__label">Menu</span></button>
+    <nav aria-label="Primary navigation">
+      {links.map((link) => <a href={link.href}><span>{link.label}</span><span aria-hidden="true">{link.label}</span></a>)}
+    </nav>
+  </div>
 </header>
 <script>
   const button = document.querySelector('.menu-toggle');
   const nav = document.querySelector('.site-header nav');
+  const label = button?.querySelector('.menu-toggle__label');
+  const close = () => {
+    button?.setAttribute('aria-expanded', 'false');
+    nav?.classList.remove('is-open');
+    if (label) label.textContent = 'Menu';
+  };
   button?.addEventListener('click', () => {
     const opened = button.getAttribute('aria-expanded') === 'true';
     button.setAttribute('aria-expanded', String(!opened));
     nav?.classList.toggle('is-open', !opened);
+    if (label) label.textContent = opened ? 'Menu' : 'Close';
   });
+  nav?.querySelectorAll('a').forEach((link) => link.addEventListener('click', close));
 </script>

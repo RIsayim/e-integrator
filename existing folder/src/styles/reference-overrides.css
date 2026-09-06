@@ -1,0 +1,700 @@
+/* Visual and interaction details measured from the live Framer reference. */
+.hero > .scene > .scene__image { min-height: 100%; }
+
+/* The live cards slide duplicate title text vertically on hover. */
+.project-card__title {
+  display: block;
+  height: 20px;
+  overflow: hidden;
+  transform: none !important;
+}
+
+.project-card__title span {
+  display: block;
+  height: 20px;
+  transition: transform .35s cubic-bezier(.2,.8,.2,1);
+}
+
+.project-card:hover .project-card__title { transform: none !important; }
+.project-card:hover .project-card__title span { transform: translateY(-100%); }
+
+/* The source uses a text Menu control on phones rather than a hamburger. */
+.menu-toggle .menu-toggle__label {
+  display: block;
+  width: auto;
+  height: auto;
+  margin: 0;
+  background: transparent;
+  color: inherit;
+  font: 500 14px/1.1 'Switzer', Arial, sans-serif;
+  transform: none !important;
+}
+
+/* Full image portfolio hero. */
+.portfolio-hero,
+.project-showcase-hero {
+  position: relative;
+  min-height: 100vh;
+  margin: 15px;
+  overflow: hidden;
+  border-radius: 10px;
+  background: var(--ink);
+  color: var(--white);
+}
+
+.portfolio-hero > .scene,
+.project-showcase-hero > .scene {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.portfolio-hero::after,
+.project-showcase-hero::after {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  content: '';
+  background: rgba(9, 9, 9, .45);
+  pointer-events: none;
+}
+
+.portfolio-hero__content,
+.project-showcase-hero__content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  min-height: 100vh;
+  padding-bottom: 60px;
+}
+
+.portfolio-hero__copy,
+.project-showcase-hero__copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+  max-width: 600px;
+}
+
+.portfolio-hero .eyebrow { color: var(--white); }
+.portfolio-hero h1,
+.project-showcase-hero h1 {
+  margin: 0;
+  font: 500 50px/1.1 'Switzer', Arial, sans-serif;
+  letter-spacing: -.04em;
+}
+
+.portfolio-hero__copy > p:not(.eyebrow) {
+  max-width: 510px;
+  color: #e7e7e7;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+.scroll-cue {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border: 1px solid rgba(255,255,255,.45);
+  border-radius: 50%;
+  color: var(--white);
+  font-size: 18px;
+  line-height: 1;
+  transition: background .25s ease, color .25s ease, transform .25s ease;
+}
+
+.scroll-cue:hover {
+  background: var(--white);
+  color: var(--ink);
+  transform: translateY(3px);
+}
+
+.portfolio-list { padding: 50px 0 100px; }
+.portfolio-list .projects-grid--all { margin-bottom: 0; }
+
+/* Exact presentation of a project-detail hero and its explicit 1+2+1+2 gallery rhythm. */
+.project-showcase-hero__heading {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.back-link {
+  display: grid;
+  flex: 0 0 auto;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  color: var(--white);
+  font-size: 27px;
+  line-height: 1;
+  transition: transform .25s ease;
+}
+
+.back-link:hover { transform: translateX(-4px); }
+.project-showcase-hero .location-chip { margin-top: 4px; }
+
+.project-overview { padding: 50px 0 0; }
+
+.project-overview__intro {
+  max-width: 400px;
+}
+
+.project-overview__intro .detail-copy {
+  max-width: 400px;
+  margin-top: 16px;
+  color: var(--ink);
+  font: 400 16px/1.5 Inter, Arial, sans-serif;
+  letter-spacing: 0;
+}
+
+.project-overview__body {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 50px;
+}
+
+.project-overview__body > .scene {
+  min-height: 0;
+  aspect-ratio: 1.34524;
+}
+
+.project-meta {
+  display: grid;
+  align-content: start;
+  margin: 0;
+}
+
+.project-meta > div {
+  padding: 16px 0;
+  border-top: 1px solid var(--line);
+}
+
+.project-meta > div:last-child { border-bottom: 1px solid var(--line); }
+.project-meta dt {
+  color: var(--muted);
+  font: 500 14px/1.2 'Switzer', Arial, sans-serif;
+  text-transform: uppercase;
+}
+
+.project-meta dd {
+  margin: 7px 0 0;
+  color: var(--ink);
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.project-gallery { padding: 10px 0 0; }
+
+.project-gallery__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.project-gallery__grid > .scene {
+  min-height: 0;
+  aspect-ratio: 1.34524;
+}
+
+.project-gallery__grid > .scene:nth-child(1),
+.project-gallery__grid > .scene:nth-child(4) {
+  grid-column: 1 / -1;
+}
+
+.project-pagination {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 130px;
+  padding: 50px 0 100px;
+}
+
+.project-pagination a {
+  font: 500 14px/1.1 'Switzer', Arial, sans-serif;
+  transition: opacity .2s ease, transform .2s ease;
+}
+
+.project-pagination a:last-child { justify-self: end; }
+.project-pagination a:hover { opacity: .65; }
+
+/* The CTA is shared by the portfolio index and every project detail page. */
+.project-cta {
+  display: grid;
+  place-items: center;
+  width: min(calc(100% - 40px), 1400px);
+  min-height: 400px;
+  margin: 0 auto 100px;
+  padding: 40px 25px;
+  overflow: hidden;
+  border-radius: 10px;
+  background: linear-gradient(rgba(9,9,9,.6), rgba(9,9,9,.65)), url('../assets/reference/Tfm28BpIxFLGYajzCgnTkG7OqrQ.jpg') center / cover;
+  color: var(--white);
+  text-align: center;
+}
+
+.project-cta > div { max-width: 540px; }
+.project-cta h2 {
+  font: 600 36px/1.1 'Switzer', Arial, sans-serif;
+  letter-spacing: -.027em;
+}
+
+.project-cta p { margin: 15px 0 22px; }
+
+/* The source component is intentionally large and uses real avatar media. */
+.testimonial-card,
+.testimonial-card__content {
+  min-height: 714px;
+}
+
+.testimonial-card__content {
+  justify-content: flex-end;
+  gap: 24px;
+}
+
+.testimonial-card__author {
+  justify-content: space-between;
+  width: min(100%, 540px);
+}
+
+.testimonial-card__avatars {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.testimonial-card__avatar {
+  display: block;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+  opacity: .35;
+  filter: grayscale(1);
+  transition: opacity .4s cubic-bezier(.2,.8,.2,1), filter .4s cubic-bezier(.2,.8,.2,1), transform .4s cubic-bezier(.2,.8,.2,1);
+}
+
+.testimonial-card__avatar .scene {
+  width: 100%;
+  min-height: 0;
+  height: 100%;
+}
+
+.testimonial-card__avatar .scene__image { object-fit: cover; }
+.testimonial-card__avatar:hover,
+.testimonial-card__avatar.is-selected {
+  opacity: 1;
+  filter: grayscale(0);
+  transform: scale(1.06);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  [data-reveal] .scene__image {
+    transform: scale(1.08);
+    transition: transform .8s cubic-bezier(.2,.8,.2,1), filter .4s ease;
+  }
+
+  [data-reveal].is-revealed .scene__image { transform: scale(1); }
+}
+
+@media (max-width: 1199px) and (min-width: 810px) {
+  .shell { width: min(calc(100% - 50px), 1400px); }
+  .portfolio-hero,
+  .project-showcase-hero { min-height: 93vh; }
+  .portfolio-hero__content,
+  .project-showcase-hero__content { min-height: 93vh; padding-bottom: 50px; }
+  .portfolio-hero h1,
+  .project-showcase-hero h1 { font-size: 42px; }
+  .project-cta h2 { font-size: 32px; }
+  .testimonial-card,
+  .testimonial-card__content { min-height: 400px; }
+}
+
+@media (max-width: 809px) {
+  .site-header__inner { position: relative; }
+  .site-header .brand,
+  .site-header .menu-toggle { position: relative; z-index: 102; }
+  .site-header nav.is-open {
+    z-index: 101;
+    background: rgba(9,9,9,.98);
+  }
+
+  .portfolio-hero,
+  .project-showcase-hero {
+    min-height: 93vh;
+    margin: 0;
+    border-radius: 0;
+  }
+
+  .portfolio-hero__content,
+  .project-showcase-hero__content {
+    min-height: 93vh;
+    padding-bottom: 40px;
+  }
+
+  .portfolio-hero h1,
+  .project-showcase-hero h1 { font-size: 34px; }
+  .portfolio-hero__copy { gap: 13px; }
+  .portfolio-hero__copy > p:not(.eyebrow) { font-size: 15px; }
+  .scroll-cue { width: 34px; height: 34px; }
+  .portfolio-list { padding: 40px 0 100px; }
+
+  .project-showcase-hero__heading { gap: 12px; }
+  .back-link { width: 25px; height: 25px; font-size: 24px; }
+  .project-overview { padding-top: 40px; }
+  .project-overview__body { grid-template-columns: 1fr; margin-top: 40px; }
+  .project-overview__body > .scene { aspect-ratio: 1.34524; }
+  .project-gallery__grid { grid-template-columns: 1fr; }
+  .project-gallery__grid > .scene,
+  .project-gallery__grid > .scene:nth-child(1),
+  .project-gallery__grid > .scene:nth-child(4) { grid-column: auto; min-height: 0; }
+  .project-pagination { min-height: 0; padding: 35px 0 50px; }
+  .project-cta { min-height: 350px; margin-bottom: 50px; }
+  .project-cta h2 { font-size: 30px; }
+
+  .testimonial-card,
+  .testimonial-card__content { min-height: 300px; }
+  .testimonial-card__content { padding: 28px; }
+  .testimonial-card blockquote { font-size: 19px; }
+  .testimonial-card__author { align-items: flex-end; }
+  .testimonial-card__avatars { gap: 7px; }
+  .testimonial-card__avatar { width: 34px; height: 34px; }
+}
+
+/* Second-pass source fidelity: source sections use a black image frame, not a page margin. */
+.hero,
+.portfolio-hero,
+.project-showcase-hero {
+  min-height: 100vh;
+  margin: 0;
+  border-radius: 0;
+  background: var(--ink);
+}
+
+.hero > .scene,
+.portfolio-hero > .scene,
+.project-showcase-hero > .scene {
+  inset: 15px;
+  width: auto;
+  height: auto;
+  border-radius: 10px;
+}
+
+.hero::after,
+.portfolio-hero::after,
+.project-showcase-hero::after { inset: 15px; }
+
+.hero__content,
+.portfolio-hero__content,
+.project-showcase-hero__content {
+  width: min(calc(100% - 90px), 1400px);
+  min-height: 100vh;
+  padding-bottom: 60px;
+}
+
+.section-intro h2,
+.list-title h2 { font-size: 44px; }
+
+/* About uses the large pale panel and animated, short-divider statistics. */
+.about-section {
+  padding: 70px 0 100px;
+  background: var(--panel);
+}
+
+.about-grid__copy > p { max-width: 460px; }
+
+.stats {
+  display: flex;
+  justify-content: space-between;
+  max-width: 690px;
+  margin-top: auto;
+  border: 0;
+}
+
+.stats > div {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  padding: 0;
+}
+
+.stats > div + div {
+  padding-left: 20px;
+  border-left: 0;
+}
+
+.stats > div + div::before {
+  position: absolute;
+  top: 3px;
+  left: 0;
+  width: 1px;
+  height: 45px;
+  content: '';
+  background: #999;
+}
+
+/* Source stacks service copy above its image at tablet and mobile widths. */
+@media (max-width: 1199px) {
+  .service-row .scene { order: initial; }
+}
+
+@media (max-width: 1199px) and (min-width: 810px) {
+  .section-intro h2,
+  .list-title h2 { font-size: 36px; }
+
+  .philosophy-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .philosophy-card { display: flex; }
+  .philosophy-card .scene { height: auto; }
+}
+
+/* The testimonial component uses its content at the top and controls at the bottom. */
+.testimonial-section { padding: 100px 0; }
+
+.testimonial-card {
+  width: min(100%, 1200px);
+  margin-inline: auto;
+}
+
+.testimonial-card__overlay {
+  background: linear-gradient(180deg, rgba(0,0,0,.6), rgba(0,0,0,.2));
+}
+
+.testimonial-card__content {
+  justify-content: space-between;
+  width: min(100%, 1120px);
+  max-width: none;
+  margin-inline: auto;
+  padding: 30px;
+}
+
+.testimonial-card__author { width: 100%; }
+
+/* Team cards expand in normal flow from the white information panel. */
+.team-section { padding: 70px 0 100px; }
+.team-card::after { display: none; }
+.team-card:hover .scene__image { filter: none; transform: none; }
+
+.team-card__summary {
+  width: 100%;
+  padding: 18px 15px;
+  border: 0;
+  background: var(--white);
+  color: var(--ink);
+  text-align: left;
+  cursor: pointer;
+}
+
+.team-card__copy { display: flex; flex-direction: column; }
+.team-card__name {
+  font: 600 17px/1.2 'Switzer', Arial, sans-serif;
+}
+
+.team-card__role {
+  display: block;
+  margin-top: 7px;
+  color: var(--muted);
+  font: 500 14px/1.2 'Switzer', Arial, sans-serif;
+}
+
+.team-card__summary i {
+  color: var(--ink);
+  font: 400 24px/1 'Switzer', Arial, sans-serif;
+  font-style: normal;
+  transition: transform .5s cubic-bezier(.4,0,0,1);
+}
+
+.team-card__bio {
+  position: static;
+  display: block;
+  max-height: 0;
+  margin: 0;
+  padding: 0 15px;
+  overflow: hidden;
+  transform: none;
+  color: var(--muted);
+  opacity: 0;
+  transition: max-height .5s cubic-bezier(.4,0,0,1), padding .5s cubic-bezier(.4,0,0,1), opacity .3s ease;
+}
+
+.team-card.is-open .team-card__bio {
+  max-height: 250px;
+  padding: 0 15px 18px;
+  opacity: 1;
+}
+
+.team-card.is-open .team-card__summary i { transform: rotate(45deg); }
+
+/* The reference FAQ has only its lower dividers and a narrower reading column. */
+.faq-list {
+  width: 70%;
+  margin-inline: auto;
+  border-top: 0;
+}
+
+.faq-list details { padding: 18px 15px; }
+.faq-list details p { max-width: 470px; }
+.faq-list details[open] summary span { transform: rotate(135deg); }
+
+/* Contact details form a vertical column and the form uses filled rectangular fields. */
+.contact-section { padding: 70px 0 100px; }
+.contact-grid { align-items: end; }
+
+.contact-grid__details {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.contact-grid__details dl { width: min(100%, 400px); }
+
+.contact-grid__details .scene {
+  width: min(100%, 400px);
+  min-height: 0;
+  aspect-ratio: 10 / 7;
+}
+
+.contact-form {
+  align-self: end;
+  gap: 24px;
+  padding: 0;
+}
+
+.contact-form label { gap: 12px; }
+
+.contact-form input,
+.contact-form textarea {
+  min-height: 50px;
+  padding: 12px;
+  border: 1px solid #ccc;
+  background: #d9d9d9;
+}
+
+.contact-form textarea { min-height: 250px; }
+.contact-form input:focus,
+.contact-form textarea:focus { border-color: #999; }
+
+.contact-form .pill-button {
+  width: 100%;
+  min-height: 50px;
+  margin: 0;
+}
+
+/* The phone header remains a compact frosted menu rather than a full-screen drawer. */
+@media (max-width: 809px) {
+  body:has(.menu-toggle[aria-expanded='true']) { overflow: auto; }
+
+  .site-header {
+    position: fixed;
+    top: 25px;
+    right: 25px;
+    left: 25px;
+    width: auto;
+    border-radius: 9px;
+    background: rgba(0,0,0,.45);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+  }
+
+  .site-header__inner {
+    width: 100%;
+    padding: 18px 30px;
+    flex-wrap: wrap;
+  }
+
+  .site-header nav.is-open {
+    position: static;
+    display: flex;
+    flex-basis: 100%;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 25px 0 12px;
+    background: transparent;
+    z-index: auto;
+  }
+
+  .site-header nav.is-open a { font-size: 34px; }
+
+  .hero,
+  .portfolio-hero,
+  .project-showcase-hero { min-height: 93vh; }
+
+  .hero__content,
+  .portfolio-hero__content,
+  .project-showcase-hero__content {
+    width: calc(100% - 60px);
+    min-height: 93vh;
+    padding-bottom: 40px;
+  }
+
+  .section-intro h2,
+  .list-title h2 { font-size: 30px; }
+
+  .about-section { padding: 50px 0; }
+  .stats { display: flex; flex-direction: column; gap: 25px; }
+  .stats > div + div { padding-left: 0; }
+  .stats > div + div::before { display: none; }
+
+  .testimonial-section { padding: 50px 0; }
+  .testimonial-card__content { padding: 25px; }
+
+  .team-section { padding: 40px 0 50px; }
+  .team-card.is-open .team-card__bio { max-height: 320px; }
+
+  .faq-list { width: 100%; }
+  .faq-list details { padding: 18px 15px; }
+
+  .contact-section { min-height: 93vh; padding: 40px 0 50px; }
+  .contact-grid { gap: 40px; }
+  .contact-grid__details .scene { width: 100%; }
+  .contact-form textarea { min-height: 250px; }
+}
+
+@media (max-width: 1199px) and (min-width: 810px) {
+  .hero,
+  .portfolio-hero,
+  .project-showcase-hero { min-height: 93vh; }
+
+  .hero__content,
+  .portfolio-hero__content,
+  .project-showcase-hero__content {
+    width: min(calc(100% - 80px), 1400px);
+    min-height: 93vh;
+    padding-bottom: 50px;
+  }
+
+  .contact-section { min-height: 93vh; }
+  .contact-grid { gap: 40px; }
+  .faq-list { width: 80%; }
+  .team-section { padding: 40px 0 50px; }
+}
+
+/* Framer's primary navigation rolls duplicated labels vertically on hover. */
+.site-header nav a {
+  height: 17px;
+  overflow: hidden;
+}
+
+.site-header nav a::after { display: none; }
+
+.site-header nav a span {
+  display: block;
+  height: 17px;
+  transition: transform .35s cubic-bezier(.2,.8,.2,1);
+}
+
+.site-header nav a:hover span { transform: translateY(-100%); }
+
+@media (max-width: 809px) {
+  .site-header nav.is-open a { height: 41px; }
+  .site-header nav.is-open a span { height: 41px; }
+}

@@ -4,4 +4,37 @@ import ProjectCard from '../../components/ProjectCard.astro';
 import Scene from '../../components/Scene.astro';
 import { projects } from '../../data/projects';
 ---
-<BaseLayout title="Projects — Design & Co"><section class="page-hero wrap"><div><p class="eyebrow">(portfolio)</p><h1>A Curated Collection of Refined Interior Spaces</h1><p class="lede">Explore our full portfolio—interiors crafted between 2018 and 2025, each designed with precision, character, and a clear sense of purpose.</p></div><Scene tone="charcoal" label="Portfolio hero visual" /></section><section class="section wrap"><div class="list-title"><h2>All Projects</h2><span>(0{projects.length})</span></div><div class="projects-grid projects-grid--all">{projects.map((project) => <ProjectCard project={project} />)}</div></section><section class="cta wrap"><div><p class="eyebrow">(start a project)</p><h2>Let’s create something timeless</h2><p>Have a project in mind? Let’s bring your vision to life.</p><a class="button button--light" href="/#contact">Start your project <span>↗</span></a></div></section></BaseLayout>
+
+<BaseLayout title="Projects — Design & Co">
+  <section class="portfolio-hero" id="top">
+    <Scene asset="HyqCAf6NgzshiNuV4vQk6bedw.jpg" loading="eager" label="Portfolio interior visual" />
+    <div class="shell portfolio-hero__content" data-reveal>
+      <div class="portfolio-hero__copy">
+        <p class="eyebrow">(portfolio)</p>
+        <h1>A Curated Collection of Refined Interior Spaces</h1>
+        <p>Explore our full portfolio—interiors crafted between 2018 and 2025, each designed with precision, character, and a clear sense of purpose.</p>
+      </div>
+      <a class="scroll-cue" href="#all-projects" aria-label="View all projects">↓</a>
+    </div>
+  </section>
+
+  <section class="portfolio-list" id="all-projects">
+    <div class="shell">
+      <div class="list-title" data-reveal>
+        <h2>All Projects</h2>
+        <span>({projects.length})</span>
+      </div>
+      <div class="projects-grid projects-grid--all" data-reveal>
+        {projects.map((project) => <ProjectCard project={project} />)}
+      </div>
+    </div>
+  </section>
+
+  <section class="project-cta" data-reveal>
+    <div>
+      <h2>let’s create something timeless</h2>
+      <p>Have a project in mind? Let’s bring your vision to life.</p>
+      <a class="pill-button pill-button--cream" href="/#contact">Start your project</a>
+    </div>
+  </section>
+</BaseLayout>

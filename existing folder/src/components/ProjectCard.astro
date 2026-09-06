@@ -4,8 +4,6 @@ import type { Project } from '../data/projects';
 const { project, featured = false } = Astro.props as { project: Project; featured?: boolean };
 ---
 <a class:list={['project-card', { 'project-card--featured': featured }]} href={`/projects/${project.slug}/`}>
-  <Scene tone={project.scene} label={`${project.title} project visual`} />
-  <div class="project-card__meta"><span>{project.category}</span><span>{project.year}</span></div>
-  <h3>{project.title}</h3>
-  <p>{project.location}</p>
+  <Scene tone={project.scene} asset={project.image} label={`${project.title} project visual`} />
+  <h3 class="project-card__title"><span>{project.title}</span><span aria-hidden="true">{project.title}</span></h3>
 </a>

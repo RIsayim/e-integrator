@@ -1,35 +1,156 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import SectionHeading from '../components/SectionHeading.astro';
 import ProjectCard from '../components/ProjectCard.astro';
 import Scene from '../components/Scene.astro';
 import { projects } from '../data/projects';
+
+const localAssets = import.meta.glob('/src/assets/reference/*.{jpg,jpeg,png,webp}', { eager: true, import: 'default' });
+const imageUrl = (filename: string) => {
+  const asset = localAssets[`/src/assets/reference/${filename}`] as string | { src: string } | undefined;
+  return typeof asset === 'string' ? asset : asset?.src ?? '';
+};
+
 const services = [
-  ['Residential Interior Design', 'We create spaces that reflect your lifestyle, blending comfort, elegance, and timeless design principles.', 'sand'],
-  ['Commercial Interior Design', 'We design purposeful environments that enhance brand identity and improve the way people work and connect.', 'charcoal'],
-  ['Renovation & Project Management', 'We oversee every stage with precision, ensuring each detail aligns seamlessly with your vision and goals.', 'forest']
+  { title: 'residential interior design', copy: 'We create spaces that reflect your lifestyle, blending comfort, elegance, and timeless design principles.', image: 'HMrCVcCNnaltAP3lZC6h6OUTf0.jpg' },
+  { title: 'Commercial Interior Design', copy: 'We design purposeful environments that enhance brand identity and improve the way people work and connect.', image: 'qWwDecdASA1t2lSe2RfQMhtfso.jpg' },
+  { title: 'Renovation & Project Management', copy: 'We oversee every stage with precision, ensuring each detail aligns seamlessly with your vision and goals.', image: 'K7AbBTGRBAkZezc5X2xGVwJdK8.jpg' }
 ];
-const principles = [['Simplicity', 'We value clean lines and thoughtful restraint, allowing each element to breathe and serve a purpose.', 'clay'], ['Harmony', 'Every space should feel cohesive — a seamless blend of materials, colors, and light designed to inspire calm and comfort.', 'ocean'], ['Longevity', 'We design with intention, ensuring each decision stands the test of time in both style and quality.', 'rose']];
+const philosophy = [
+  { title: 'simplicity', copy: 'We value clean lines and thoughtful restraint, allowing each element to breathe and serve a purpose.', image: 'JUjPplDK6mgLCGvvNPBFDrYzOo.jpg' },
+  { title: 'Harmony', copy: 'Every space should feel cohesive — a seamless blend of materials, colors, and light designed to inspire calm and comfort.', image: 'TOIXoQgHc6JwZYEmsAPT9kwxn8.jpg' },
+  { title: 'Longevity', copy: 'We design with intention, ensuring each decision stands the test of time in both style and quality.', image: 'ueCM9pzwra62pz1MY8egWqtwqvI.jpg' }
+];
+const team = [
+  { name: 'Ethan Cole', role: 'Lead Interior Designer', image: '6mHhTWIhC3bs9HgC27vM9jkW7Bo.jpg', bio: 'Ethan brings over a decade of experience in crafting timeless interiors that balance form and function. His design philosophy revolves around creating spaces that reflect personality while maintaining modern elegance.' },
+  { name: 'Lucas Grant', role: 'Creative Director', image: 'Npf2mL8C2QlQOxhCQwlJx3L1WKU.jpg', bio: 'Lucas oversees the studio’s creative vision, ensuring every project delivers a distinctive atmosphere. With a strong eye for color, lighting, and texture, he transforms ordinary rooms into meaningful experiences.' },
+  { name: 'Noah Reed', role: 'Senior Architect', image: 'NFdOHYJK8wDzkD8QYFsdj4e9ZY.jpg', bio: 'Noah specializes in spatial design and architectural planning. His structural expertise and attention to proportion ensure that every concept transitions seamlessly from design to execution.' },
+  { name: 'Adrian Blake', role: 'Project Manager', image: 'LJ7U8GR5Ni8iUsdFoywhefKoc.jpg', bio: 'Adrian coordinates project timelines, client communication, and on-site execution. With his background in construction management, he ensures every design is delivered with precision and efficiency.' }
+];
+const testimonials = [
+  { name: 'Emma Collins', role: 'House Owner', avatar: 'remKYFiHD3hHi6r6nkLMgUl38Go.jpg', background: 'lVdV1MiB2EiktdICNa5kk9xSeM.jpg', quote: '“From the first meeting, they understood our vision completely. The final design feels effortless — every room flows beautifully and captures exactly what we hoped for.”' },
+  { name: 'Paul Richards', role: 'Creative Director, Atelier Maison', avatar: '5bJDhuqVzyVmWnb9TYEjGANPdPg.jpg', background: 'bA6pm3kKCsRbvGPvpS2gO3UANI0.jpg', quote: 'The design perfectly balances functionality and beauty. Their thoughtful approach made the process seamless from concept to completion, with results beyond imagination.' },
+  { name: 'Clara Jensen', role: 'Residential Client', avatar: '75GeAmOoiSljnB9XedBH5Ili9Kg.jpg', background: 'clANltkimMrgnAQNdfI1xzsQ.jpg', quote: '“Their ability to translate our brand into a physical space was remarkable. Every detail, from materials to lighting, reflects the atmosphere we wanted our guests to feel.”' },
+  { name: 'Luca Moretti', role: 'Hospitality Manager, The Noven Hotel', avatar: 'O7ZUCGJxFfKEUYDzLAX5mVPMcwM.jpg', background: 'j9gPKNvPrDwsjhKD8ao16oYL8E.jpg', quote: '“The team understood our vision immediately and brought it to life with refined simplicity. The result exceeded every expectation and inspired future ideas.' }
+];
+const faqs = [
+  ['What services do you offer?', 'We provide full interior design services including space planning, styling, and project management.'],
+  ['Do you handle both residential and commercial projects?', 'Yes, we work on a variety of spaces — from private homes to modern offices.'],
+  ['How long does a typical project take?', 'Timelines vary by scope, but most projects are completed within 8–12 weeks.'],
+  ['Can you work with my existing furniture?', 'Absolutely. We love blending new design elements with your existing pieces.'],
+  ['How can I start a project with you?', 'Simply reach out through our contact form, and we’ll schedule an initial consultation.']
+];
 ---
 <BaseLayout>
-  <section class="hero wrap">
-    <div class="hero__content"><p class="eyebrow">Based in New York, USA</p><h1>Timeless Interiors.<br />Crafted for You.</h1><p class="lede">We create refined spaces that blend comfort, beauty, and lasting design — tailored to the way you live.</p><a class="button" href="/projects/">See projects <span>↗</span></a></div>
-    <Scene tone="sand" label="Warm, modern living room visual" />
+  <section class="hero hero--home" id="hero">
+    <Scene asset="Ccy1uQ02SCJ8HiMkVcGWyTM6alk.jpg" loading="eager" label="Modern interior design space" />
+    <div class="shell hero__content" data-reveal>
+      <div class="hero__copy">
+        <p class="location-chip"><span>⌖</span> Based in New York, USA</p>
+        <h1>Timeless Interiors.<br />Crafted for You.</h1>
+        <p class="hero__description">We create refined spaces that blend comfort, beauty, and lasting design — tailored to the way you live.</p>
+        <a class="pill-button pill-button--cream" href="#project">See Projects</a>
+      </div>
+    </div>
   </section>
 
-  <section class="section wrap" id="work"><SectionHeading eyebrow="(works)" title="Featured works" /><div class="projects-grid">{projects.slice(0, 4).map((project) => <ProjectCard project={project} />)}</div><a class="text-link" href="/projects/">View all <span>↗</span></a></section>
+  <section class="home-section works-section" id="project"><div class="shell">
+    <div class="section-intro" data-reveal><p class="eyebrow">(works)</p><h2>Featured works</h2></div>
+    <div class="projects-grid" data-reveal>{projects.slice(0, 4).map((project) => <ProjectCard project={project} />)}</div>
+    <div class="center-button" data-reveal><a class="pill-button" href="/projects/">View all</a></div>
+  </div></section>
 
-  <section class="section about wrap" id="about"><div><SectionHeading eyebrow="(about)" title="Designing Interiors with Purpose and Precision" /><p class="lede">We approach every space as a balance of function, form, and feeling. Through thoughtful materials, light, and texture, we create interiors that reflect individuality while standing the test of time.</p><a class="text-link" href="#contact">Get in touch <span>↗</span></a></div><Scene tone="clay" label="Textural interior visual" /><div class="stats"><div><strong>80+</strong><span>Projects completed</span></div><div><strong>12+</strong><span>Years of experience</span></div><div><strong>16</strong><span>Awards &amp; recognition</span></div></div></section>
+  <section class="home-section about-section" id="about"><div class="shell">
+    <div class="section-intro" data-reveal><p class="eyebrow">(about)</p><h2>Designing Interiors with<br />Purpose and Precision</h2></div>
+    <div class="about-grid"><Scene asset="bJNj6NXoXoIvo22mXzc3o9O4wI.jpg" label="About section interior" /><div class="about-grid__copy" data-reveal>
+      <p>We approach every space as a balance of function, form, and feeling. Through thoughtful materials, light, and texture, we create interiors that reflect individuality while standing the test of time.</p>
+      <a class="pill-button" href="#contact">Get in Touch</a>
+      <div class="stats"><div><strong data-stat-target="60">0+</strong><span>Projects Completed</span></div><div><strong data-stat-target="10">0+</strong><span>Years of Experience</span></div><div><strong data-stat-target="30">0+</strong><span>Awards &amp; Recognition</span></div></div>
+    </div></div>
+  </div></section>
 
-  <section class="section wrap" id="services"><SectionHeading eyebrow="(services)" title="Design Services — Tailored to You" /><div class="services-list">{services.map(([name, copy, tone], index) => <article class="service"><span class="service__number">0{index + 1}</span><div><h3>{name}</h3><p>{copy}</p><a class="text-link" href="#contact">Book this service <span>↗</span></a></div><Scene tone={tone} label={`${name} visual`} /></article>)}</div></section>
+  <section class="home-section services-section" id="services"><div class="shell">
+    <div class="section-intro section-intro--center" data-reveal><p class="eyebrow">(services)</p><h2>Design Services<br />Tailored to You</h2></div>
+    <div class="services-list">{services.map((service) => <article class="service-row" data-reveal><div class="service-row__copy"><h3>{service.title}</h3><p>{service.copy}</p><a class="pill-button" href="#contact">Book this Service</a></div><Scene asset={service.image} label={`${service.title} interior`} /></article>)}</div>
+  </div></section>
 
-  <section class="testimonial wrap"><div><p class="eyebrow">(testimonials)</p><h2>What Our Clients Say</h2><blockquote>“From the first meeting, they understood our vision completely. The final design feels effortless — every room flows beautifully and captures exactly what we hoped for.”</blockquote><p class="client"><strong>Emma Collins</strong><span>House Owner</span></p></div><Scene tone="rose" label="Elegant bedroom interior visual" /></section>
+  <section class="home-section testimonial-section" id="testimonial"><div class="shell">
+    <div class="section-intro section-intro--center" data-reveal><p class="eyebrow">(testimonials)</p><h2>What Our<br />Clients Say</h2></div>
+    <article class="testimonial-card" data-reveal><Scene asset={testimonials[0].background} label="Testimonial interior" /><div class="testimonial-card__overlay"></div><div class="testimonial-card__content"><blockquote data-testimonial-quote>{testimonials[0].quote}</blockquote><div class="testimonial-card__author"><div><strong data-testimonial-name>{testimonials[0].name}</strong><span data-testimonial-role>{testimonials[0].role}</span></div><div class="testimonial-card__avatars" aria-label="Choose a testimonial">{testimonials.map((testimonial, index) => <button class:list={['testimonial-card__avatar', { 'is-selected': index === 0 }]} type="button" data-testimonial-avatar data-quote={testimonial.quote} data-name={testimonial.name} data-role={testimonial.role} data-background={imageUrl(testimonial.background)} aria-pressed={index === 0 ? 'true' : 'false'}><Scene asset={testimonial.avatar} label={`${testimonial.name} portrait`} /></button>)}</div></div></div></article>
+  </div></section>
 
-  <section class="section wrap"><SectionHeading eyebrow="(philosophy)" title="Our Design Philosophy" /><div class="principles">{principles.map(([name, copy, tone]) => <article><Scene tone={tone} label={`${name} design principle visual`} /><h3>{name}</h3><p>{copy}</p></article>)}</div></section>
+  <section class="home-section philosophy-section" id="philosophy"><div class="shell">
+    <div class="section-intro" data-reveal><p class="eyebrow">(philosophy)</p><h2>Our Design Philosophy</h2></div>
+    <div class="philosophy-grid">{philosophy.map((item) => <article class="philosophy-card" data-reveal><Scene asset={item.image} label={`${item.title} interior`} /><div><h3>{item.title}</h3><p>{item.copy}</p></div></article>)}</div>
+  </div></section>
 
-  <section class="section wrap"><SectionHeading eyebrow="(team)" title="The Minds Behind the Design" /><div class="team">{[['Ethan Cole','Lead Interior Designer','sand'],['Lucas Grant','Creative Director','charcoal'],['Noah Reed','Senior Architect','forest'],['Adrian Blake','Project Manager','clay']].map(([name, role, tone]) => <article><Scene tone={tone} label={`${name} profile visual`} /><h3>{name}</h3><p class="eyebrow">{role}</p><p>Bringing a considered eye and deep expertise to interiors designed for lasting connection.</p></article>)}</div></section>
+  <section class="team-section" id="team"><div class="shell">
+    <div class="section-intro" data-reveal><p class="eyebrow">(team)</p><h2>The Minds Behind<br />the Design</h2></div>
+    <div class="team-grid">{team.map((member, index) => <article class="team-card" data-reveal><Scene asset={member.image} label={`${member.name} profile`} /><button class="team-card__summary" type="button" data-team-toggle aria-expanded="false" aria-controls={`team-bio-${index}`}><span class="team-card__copy"><span class="team-card__name">{member.name}</span><span class="team-card__role">{member.role}</span></span><i aria-hidden="true">+</i></button><p class="team-card__bio" id={`team-bio-${index}`}>{member.bio}</p></article>)}</div>
+  </div></section>
 
-  <section class="section faq wrap"><SectionHeading eyebrow="(faq)" title="Frequently Asked Questions" />{[['What services do you offer?','We provide full interior design services including space planning, styling, and project management.'],['Do you handle both residential and commercial projects?','Yes, we work on a variety of spaces — from private homes to modern offices.'],['How long does a typical project take?','Timelines vary by scope, but most projects are completed within 8–12 weeks.'],['Can you work with my existing furniture?','Absolutely. We love blending new design elements with your existing pieces.'],['How can I start a project with you?','Simply reach out through our contact form, and we’ll schedule an initial consultation.']].map(([question, answer]) => <details><summary>{question}<span>+</span></summary><p>{answer}</p></details>)}</section>
+  <section class="home-section faq-section" id="faq"><div class="shell shell--narrow">
+    <div class="section-intro section-intro--center" data-reveal><p class="eyebrow">(faq)</p><h2>Frequently Asked Questions</h2></div>
+    <div class="faq-list">{faqs.map(([question, answer]) => <details data-reveal><summary>{question}<span>+</span></summary><p>{answer}</p></details>)}</div>
+  </div></section>
 
-  <section class="contact section wrap" id="contact"><div><SectionHeading eyebrow="(contact)" title="Get in touch" /><dl><dt>Address</dt><dd>248 Mercer Street, Suite 4B<br />New York, NY 10012</dd><dt>Email</dt><dd><a href="mailto:hello@designandco.example">hello@designandco.example</a></dd><dt>Phone</dt><dd>+1 212 555 0128</dd><dt>Hours</dt><dd>Monday to Friday, 8:30am – 5:00pm</dd></dl><Scene tone="ocean" label="Contact section interior visual" /></div><form action="/" method="post"><label>Name<input name="name" placeholder="Jane Smith" required /></label><label>Email<input name="email" type="email" placeholder="jane@example.com" required /></label><label>Message<textarea name="message" rows="6" placeholder="Tell us about your project"></textarea></label><button class="button" type="submit">Submit <span>↗</span></button></form></section>
+  <section class="contact-section" id="contact"><div class="shell">
+    <div class="section-intro" data-reveal><p class="eyebrow">(contact)</p><h2>GET IN TOUCH</h2></div>
+    <div class="contact-grid"><div class="contact-grid__details" data-reveal><dl><dt>address</dt><dd><a href="https://maps.app.goo.gl/fake-address-248-mercer-street" target="_blank" rel="noreferrer">248 Mercer Street, Suite 4B, New York, NY 10012</a></dd><dt>e-mail</dt><dd><a href="mailto:info@design&co.com">info@design&amp;co.com</a></dd><dt>phone</dt><dd>+44 7821 445 903</dd><dt>hours</dt><dd>Monday to Friday, 8:30am - 5:00pm</dd></dl><Scene asset="CGZmJVnE2KOSOnoGPQF1CqO69w.jpg" label="Contact interior" /></div><form class="contact-form" action="/" method="post" data-reveal><label>Name<input name="Name" placeholder="Jane Smith" required /></label><label>Email<input name="Email" type="email" placeholder="jane@framer.com" required /></label><label>Message<textarea name="Message" rows="5"></textarea></label><button class="pill-button" type="submit">Submit</button></form></div>
+  </div></section>
+<script>
+  const testimonialQuote = document.querySelector<HTMLElement>('[data-testimonial-quote]');
+  const testimonialName = document.querySelector<HTMLElement>('[data-testimonial-name]');
+  const testimonialRole = document.querySelector<HTMLElement>('[data-testimonial-role]');
+  const testimonialImage = document.querySelector<HTMLImageElement>('.testimonial-card > .scene .scene__image');
+  const testimonialButtons = document.querySelectorAll<HTMLButtonElement>('[data-testimonial-avatar]');
+  let testimonialIndex = 0;
+
+  const selectTestimonial = (button: HTMLButtonElement) => {
+    testimonialButtons.forEach((item) => {
+      const selected = item === button;
+      item.classList.toggle('is-selected', selected);
+      item.setAttribute('aria-pressed', String(selected));
+    });
+    testimonialIndex = Array.from(testimonialButtons).indexOf(button);
+    if (testimonialQuote) testimonialQuote.textContent = button.dataset.quote ?? '';
+    if (testimonialName) testimonialName.textContent = button.dataset.name ?? '';
+    if (testimonialRole) testimonialRole.textContent = button.dataset.role ?? '';
+    if (testimonialImage && button.dataset.background) testimonialImage.src = button.dataset.background;
+  };
+
+  testimonialButtons.forEach((button) => button.addEventListener('click', () => selectTestimonial(button)));
+  if (testimonialButtons.length > 1) {
+    window.setInterval(() => selectTestimonial(testimonialButtons[(testimonialIndex + 1) % testimonialButtons.length]), 15000);
+  }
+
+  const stats = document.querySelectorAll<HTMLElement>('[data-stat-target]');
+  const countStats = () => stats.forEach((stat) => {
+    if (stat.dataset.counted === 'true') return;
+    stat.dataset.counted = 'true';
+    const target = Number(stat.dataset.statTarget ?? 0);
+    const duration = 2300;
+    const startedAt = performance.now();
+    const tick = (now: number) => {
+      const progress = Math.min((now - startedAt) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 4);
+      stat.textContent = `${Math.round(target * eased)}+`;
+      if (progress < 1) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  });
+  const statsObserver = new IntersectionObserver((entries) => {
+    if (entries.some((entry) => entry.isIntersecting)) {
+      countStats();
+      statsObserver.disconnect();
+    }
+  }, { threshold: .35 });
+  if (stats[0]) statsObserver.observe(stats[0]);
+
+  document.querySelectorAll<HTMLButtonElement>('[data-team-toggle]').forEach((button) => button.addEventListener('click', () => {
+    const card = button.closest<HTMLElement>('.team-card');
+    const opened = button.getAttribute('aria-expanded') === 'true';
+    button.setAttribute('aria-expanded', String(!opened));
+    card?.classList.toggle('is-open', !opened);
+  }));
+</script>
 </BaseLayout>

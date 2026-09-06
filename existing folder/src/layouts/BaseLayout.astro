@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import '../styles/reference-overrides.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 const { title = 'Design & Co — Interior Design' } = Astro.props;
@@ -16,5 +17,17 @@ const { title = 'Design & Co — Interior Design' } = Astro.props;
     <Header />
     <main><slot /></main>
     <Footer />
+    <script>
+      const targets = document.querySelectorAll<HTMLElement>('[data-reveal]');
+      const reveal = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-revealed');
+            reveal.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.12 });
+      targets.forEach((target) => reveal.observe(target));
+    </script>
   </body>
 </html>
