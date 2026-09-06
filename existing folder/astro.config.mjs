@@ -1,6 +1,7 @@
 import { defineConfig } from 'astro/config';
 
 export default defineConfig({
-  site: 'https://example.pages.dev',
+  site: 'https://risayim.github.io',
+  base: '/e-integrator',
   trailingSlash: 'always'
 });
