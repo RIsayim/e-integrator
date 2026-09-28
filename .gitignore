@@ -1,0 +1,7 @@
+# Astro build output: generated automatically from the source files.
+existing folder/dist/
+existing folder/.astro/
+
+# Local dependencies and caches: recreate with npm install.
+existing folder/node_modules/
+existing folder/.npm-cache/

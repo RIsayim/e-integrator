@@ -3,38 +3,38 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import ProjectCard from '../../components/ProjectCard.astro';
 import Scene from '../../components/Scene.astro';
 import { projects } from '../../data/projects';
+
+const base = import.meta.env.BASE_URL;
 ---
 
-<BaseLayout title="Projects — Design & Co">
+<BaseLayout title="Projects | Orion">
   <section class="portfolio-hero" id="top">
-    <Scene asset="HyqCAf6NgzshiNuV4vQk6bedw.jpg" loading="eager" label="Portfolio interior visual" />
+    <Scene asset="outdoor_living_001.jpg" loading="eager" label="Connected luxury residence" />
     <div class="shell portfolio-hero__content" data-reveal>
-      <div class="portfolio-hero__copy">
-        <p class="eyebrow">(portfolio)</p>
-        <h1>A Curated Collection of Refined Interior Spaces</h1>
-        <p>Explore our full portfolio—interiors crafted between 2018 and 2025, each designed with precision, character, and a clear sense of purpose.</p>
-      </div>
+      <div class="portfolio-hero__copy"><h1>Spaces Made Smarter.<br />Experiences Made Effortless.</h1><p>Explore homes where technology, architecture and everyday living come together as one beautifully integrated experience.</p></div>
       <a class="scroll-cue" href="#all-projects" aria-label="View all projects">↓</a>
     </div>
   </section>
 
   <section class="portfolio-list" id="all-projects">
     <div class="shell">
-      <div class="list-title" data-reveal>
-        <h2>All Projects</h2>
-        <span>({projects.length})</span>
+      <div class="list-title" data-reveal><h2>Selected Projects</h2><span>({projects.length})</span></div>
+      <div class="project-filters" aria-label="Filter projects" data-reveal>
+        <button class="is-active" type="button" data-filter="all">All</button><button type="button" data-filter="Smart Home Automation">Smart Home</button><button type="button" data-filter="Lighting & Shading">Lighting</button><button type="button" data-filter="Home Cinema">Home Cinema</button><button type="button" data-filter="Home Audio & Entertainment">Audio</button><button type="button" data-filter="Security & Surveillance">Security</button><button type="button" data-filter="Networking & Wi-Fi">Networking</button>
       </div>
-      <div class="projects-grid projects-grid--all" data-reveal>
-        {projects.map((project) => <ProjectCard project={project} />)}
-      </div>
+      <div class="projects-archive" data-project-archive>{projects.map((project) => <ProjectCard project={project} archive />)}</div>
     </div>
   </section>
 
-  <section class="project-cta" data-reveal>
-    <div>
-      <h2>let’s create something timeless</h2>
-      <p>Have a project in mind? Let’s bring your vision to life.</p>
-      <a class="pill-button pill-button--cream" href="/#contact">Start your project</a>
-    </div>
-  </section>
+  <section class="project-cta" data-reveal><div><h2>Let's create a smarter home</h2><p>Tell us about your new home, renovation or technology upgrade.</p><a class="pill-button pill-button--cream" href={`${base}contact/`}>Start Your Project</a></div></section>
+
+  <script>
+    const filterButtons = document.querySelectorAll<HTMLButtonElement>('[data-filter]');
+    const cards = document.querySelectorAll<HTMLElement>('[data-project-card]');
+    filterButtons.forEach((button) => button.addEventListener('click', () => {
+      const filter = button.dataset.filter;
+      filterButtons.forEach((item) => item.classList.toggle('is-active', item === button));
+      cards.forEach((card) => { card.hidden = filter !== 'all' && card.dataset.projectCategory !== filter; });
+    }));
+  </script>
 </BaseLayout>

@@ -1,9 +1,13 @@
 ---
 import Scene from './Scene.astro';
 import type { Project } from '../data/projects';
-const { project, featured = false } = Astro.props as { project: Project; featured?: boolean };
+
+const { project, featured = false, archive = false } = Astro.props as { project: Project; featured?: boolean; archive?: boolean };
+const base = import.meta.env.BASE_URL;
 ---
-<a class:list={['project-card', { 'project-card--featured': featured }]} href={`/projects/${project.slug}/`}>
-  <Scene tone={project.scene} asset={project.image} label={`${project.title} project visual`} />
-  <h3 class="project-card__title"><span>{project.title}</span><span aria-hidden="true">{project.title}</span></h3>
+
+<a class:list={['project-card', { 'project-card--featured': featured, 'project-card--archive': archive }]} href={`${base}projects/${project.slug}/`} data-project-card data-project-category={project.category}>
+  <div class="project-card__media"><Scene tone="sand" asset={project.thumbnailImage} label={project.title} /><span class="project-card__arrow" aria-hidden="true">↗</span></div>
+  <div class="project-card__meta"><span>{project.projectNumber}</span><span>{project.category}</span></div>
+  <div class="project-card__title-row"><h3>{project.title}</h3><span>{project.location}</span></div>
 </a>

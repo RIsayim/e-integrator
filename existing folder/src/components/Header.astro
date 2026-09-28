@@ -1,35 +1,82 @@
 ---
-import logo from '../assets/reference/TwSoZvtOBetv8V4O9j8pfUnTsM.svg?url';
+import { coreServices } from '../data/services';
+import { assetUrl } from '../utils/asset-url';
+
+const base = import.meta.env.BASE_URL;
 const links = [
-  { href: '/projects/', label: 'Projects' },
-  { href: '/#about', label: 'About' },
-  { href: '/#services', label: 'Services' },
-  { href: '/#contact', label: 'Contact' }
+  { href: base, label: 'Home' },
+  { href: `${base}projects/`, label: 'Projects' },
+  { href: `${base}about/`, label: 'About' },
+  { href: `${base}contact/`, label: 'Contact' }
 ];
 ---
+
 <header class="site-header">
   <div class="site-header__inner">
-    <a class="brand" href="/" aria-label="Design and Co home"><img src={logo} alt="Design &amp; Co" /></a>
-    <button class="menu-toggle" aria-label="Open navigation" aria-expanded="false"><span class="menu-toggle__label">Menu</span></button>
+    <a class="brand" href={base} aria-label="Orion home">
+      <img class="brand__logo brand__logo--white" src={`${base}orion-logo-white.png`} alt="Orion Smart Home Integration Services" />
+      <img class="brand__logo brand__logo--black" src={`${base}orion-logo-black.png`} alt="" aria-hidden="true" />
+    </a>
+    <button class="menu-toggle" aria-label="Open navigation" aria-expanded="false"><span class="menu-toggle__bar"></span><span class="menu-toggle__bar"></span><span class="menu-toggle__bar"></span></button>
     <nav aria-label="Primary navigation">
-      {links.map((link) => <a href={link.href}><span>{link.label}</span><span aria-hidden="true">{link.label}</span></a>)}
+      {links.slice(0, 1).map((link) => <a href={link.href}><span>{link.label}</span><span aria-hidden="true">{link.label}</span></a>)}
+      <div class="core-services-menu">
+        <button class="core-services-menu__trigger" type="button">Core Services <span aria-hidden="true">+</span></button>
+        <div class="core-services-menu__panel">
+          <div class="core-services-menu__links">{coreServices.map((service) => <a href={`${base}services/${service.slug}/`} data-service-preview={service.slug}>{service.menuLabel}</a>)}</div>
+          <div class="core-services-menu__preview" aria-hidden="true">
+            {coreServices.map((service, index) => <figure class:list={{ 'is-active': index === 0 }} data-service-preview-image={service.slug}><img src={assetUrl(service.heroImage)} alt="" /></figure>)}
+          </div>
+        </div>
+      </div>
+      {links.slice(1).map((link) => <a href={link.href}><span>{link.label}</span><span aria-hidden="true">{link.label}</span></a>)}
     </nav>
+    <a class="consultation-header-cta" href={`${base}consultation/`}>Schedule a Consultation <span aria-hidden="true">↗</span></a>
   </div>
 </header>
+
 <script>
   const button = document.querySelector('.menu-toggle');
   const nav = document.querySelector('.site-header nav');
-  const label = button?.querySelector('.menu-toggle__label');
+  const servicesTrigger = document.querySelector('.core-services-menu__trigger');
+  const servicesMenu = document.querySelector('.core-services-menu');
+  let closeTimer: ReturnType<typeof window.setTimeout> | undefined;
   const close = () => {
     button?.setAttribute('aria-expanded', 'false');
-    nav?.classList.remove('is-open');
-    if (label) label.textContent = 'Menu';
+    button?.setAttribute('aria-label', 'Open navigation');
+    if (!nav?.classList.contains('is-open')) return;
+    nav.classList.add('is-closing');
+    window.clearTimeout(closeTimer);
+    closeTimer = window.setTimeout(() => {
+      nav.classList.remove('is-open', 'is-closing');
+      servicesMenu?.classList.remove('is-submenu-open');
+    }, 400);
   };
   button?.addEventListener('click', () => {
     const opened = button.getAttribute('aria-expanded') === 'true';
-    button.setAttribute('aria-expanded', String(!opened));
-    nav?.classList.toggle('is-open', !opened);
-    if (label) label.textContent = opened ? 'Menu' : 'Close';
+    if (opened) {
+      close();
+      return;
+    }
+    window.clearTimeout(closeTimer);
+    nav?.classList.remove('is-closing');
+    nav?.classList.add('is-open');
+    button.setAttribute('aria-expanded', 'true');
+    button.setAttribute('aria-label', 'Close navigation');
   });
   nav?.querySelectorAll('a').forEach((link) => link.addEventListener('click', close));
+
+  servicesTrigger?.addEventListener('click', () => servicesMenu?.classList.toggle('is-submenu-open'));
+
+  const serviceLinks = servicesMenu?.querySelectorAll<HTMLAnchorElement>('[data-service-preview]');
+  const servicePreviews = servicesMenu?.querySelectorAll<HTMLElement>('[data-service-preview-image]');
+  const setServicePreview = (slug?: string) => {
+    if (!slug) return;
+    servicePreviews?.forEach((preview) => preview.classList.toggle('is-active', preview.dataset.servicePreviewImage === slug));
+  };
+  serviceLinks?.forEach((link) => {
+    const updatePreview = () => setServicePreview(link.dataset.servicePreview);
+    link.addEventListener('mouseenter', updatePreview);
+    link.addEventListener('focus', updatePreview);
+  });
 </script>

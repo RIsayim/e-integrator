@@ -1,8 +1,8 @@
 ---
-const images = import.meta.glob('/src/assets/reference/*.{jpg,jpeg,png,webp,svg}', { eager: true, import: 'default' });
-const { tone = 'sand', label = 'Interior design visual', asset, loading = 'lazy' } = Astro.props;
-const resolvedAsset = asset ? images[`/src/assets/reference/${asset}`] as string | { src: string } | undefined : undefined;
-const src = typeof resolvedAsset === 'string' ? resolvedAsset : resolvedAsset?.src;
+import { assetUrl } from '../utils/asset-url';
+
+const { tone = 'sand', label = 'Smart home technology visual', asset, loading = 'lazy' } = Astro.props;
+const src = asset ? assetUrl(asset) : '';
 ---
 <div class:list={['scene', `scene--${tone}`, { 'scene--photo': Boolean(src) }]}>
   {src ? <img class="scene__image" src={src} alt={label} loading={loading} /> : <><div class="scene__sun"></div><div class="scene__window"></div><div class="scene__wall"></div><div class="scene__sofa"></div><div class="scene__table"></div><div class="scene__plant"></div></>}

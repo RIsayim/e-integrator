@@ -1,0 +1,70 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Scene from '../components/Scene.astro';
+
+const calendarDays = [
+  { day: '28', muted: true }, { day: '29', muted: true }, { day: '30', muted: true },
+  { day: '1' }, { day: '2' }, { day: '3' }, { day: '4' },
+  { day: '5' }, { day: '6' }, { day: '7' }, { day: '8' }, { day: '9' }, { day: '10' }, { day: '11' },
+  { day: '12' }, { day: '13' }, { day: '14', selected: true }, { day: '15' }, { day: '16' }, { day: '17' }, { day: '18' },
+  { day: '19' }, { day: '20' }, { day: '21' }, { day: '22' }, { day: '23' }, { day: '24' }, { day: '25' },
+  { day: '26' }, { day: '27' }, { day: '28' }, { day: '29' }, { day: '30' }, { day: '31' }, { day: '1', muted: true }
+];
+const timeSlots = ['9:30 AM', '10:30 AM', '1:00 PM', '2:30 PM', '4:00 PM'];
+---
+
+<BaseLayout title="Schedule a Consultation | Orion">
+  <section class="consultation-page-hero">
+    <Scene asset="home_automation_001.png" loading="eager" label="A refined smart home interior" />
+    <div class="consultation-page-hero__shade" aria-hidden="true"></div>
+    <div class="shell consultation-page-hero__copy" data-reveal>
+      <h1>Let’s plan a home that feels effortless.</h1>
+      <p>Tell us a little about your space and priorities. Our team will be in touch to arrange a focused introductory consultation.</p>
+    </div>
+  </section>
+
+  <section class="consultation-page-details">
+    <div class="shell consultation-page-details__grid">
+      <div class="consultation-page-details__intro" data-reveal>
+        <p class="eyebrow">(your consultation)</p>
+        <h2>A considered first conversation.</h2>
+        <p>Whether you are planning a new build, renovating or refining an existing home, we will help you identify the technology that will make the greatest difference.</p>
+        <ol class="consultation-page-steps">
+          <li><span>01</span><div><strong>Share your plans</strong><p>Tell us about your home, project stage and ambitions.</p></div></li>
+          <li><span>02</span><div><strong>Choose a time</strong><p>Give us a preferred date and the best way to reach you.</p></div></li>
+          <li><span>03</span><div><strong>Meet our team</strong><p>We will confirm a consultation tailored to your project.</p></div></li>
+        </ol>
+      </div>
+      <section class="consultation-page-form" aria-labelledby="booking-title" data-reveal>
+        <header class="appointment-booking__header">
+          <div>
+            <p>ORION CONSULTATION</p>
+            <h2 id="booking-title">Choose a time that suits you.</h2>
+          </div>
+          <span>30 min · Online or phone</span>
+        </header>
+        <div class="appointment-booking__layout">
+          <div class="appointment-calendar">
+            <div class="appointment-calendar__topline">
+              <strong>October 2026</strong>
+              <div><button type="button" aria-label="Previous month">←</button><button type="button" aria-label="Next month">→</button></div>
+            </div>
+            <div class="appointment-calendar__week" aria-hidden="true"><span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span></div>
+            <div class="appointment-calendar__dates">
+              {calendarDays.map((date) => <button class:list={{ 'is-muted': date.muted, 'is-selected': date.selected }} type="button" aria-pressed={date.selected ? 'true' : 'false'}>{date.day}</button>)}
+            </div>
+          </div>
+          <aside class="appointment-times" aria-label="Available appointment times">
+            <p>Available times</p>
+            <strong>Wednesday, October 14</strong>
+            <div>{timeSlots.map((time, index) => <button class:list={{ 'is-selected': index === 1 }} type="button" aria-pressed={index === 1 ? 'true' : 'false'}>{time}</button>)}</div>
+          </aside>
+        </div>
+        <footer class="appointment-booking__footer">
+          <div><span>Your selection</span><strong>Wed, Oct 14 · 10:30 AM</strong></div>
+          <button class="pill-button" type="button">Continue <span aria-hidden="true">↗</span></button>
+        </footer>
+      </section>
+    </div>
+  </section>
+</BaseLayout>

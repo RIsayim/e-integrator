@@ -1,0 +1,165 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Scene from '../../components/Scene.astro';
+import { coreServices } from '../../data/services';
+import { assetUrl } from '../../utils/asset-url';
+
+export function getStaticPaths() {
+  return coreServices.map((service) => ({ params: { slug: service.slug }, props: { service } }));
+}
+
+const { service } = Astro.props;
+const currentIndex = coreServices.findIndex((item) => item.slug === service.slug);
+const nextService = coreServices[(currentIndex + 1) % coreServices.length];
+const isAutomation = service.slug === 'home-integration';
+const isLighting = service.slug === 'lighting-shading';
+const isEditorialService = true;
+const base = import.meta.env.BASE_URL;
+const canonical = new URL(Astro.url.pathname, Astro.site).toString();
+const socialImage = new URL(assetUrl(service.heroImage), Astro.site).toString();
+const editorialDetails = isLighting ? {
+  heroDescription: 'Layered light and responsive shades bring warmth, clarity and comfort to every room, from the first light of day to the final moment at night.',
+  intro: 'Intelligent lighting and shading work with the rhythm of the day, shaping every room around natural light, architecture and the way you want to feel at home.',
+  facts: [['Tailored', 'Lighting design'], ['Daylight', 'Responsive shading'], ['Effortless', 'Scene control']],
+  momentsDescription: 'From a bright, focused morning to a softer evening scene, every layer of light and shade is designed to feel natural, useful and beautifully considered.',
+  moments: [
+    { asset: 'lighting_002.jpeg', label: 'A warmly lit living room', title: 'Start with daylight', description: 'Shades rise with the morning while carefully balanced light welcomes the day without glare, harsh transitions or unnecessary effort.' },
+    { asset: 'shading_soluation_001.jpg', label: 'Automated window shading', title: 'Shape the atmosphere', description: 'Adjust daylight, privacy and comfort in a single motion. Your rooms stay calm, connected to the outdoors and perfectly balanced.' },
+    { asset: 'lighting_003.jpeg', label: 'Architectural lighting in a home', title: 'Set the evening tone', description: 'One scene layers architectural, decorative and task lighting to make dining, relaxing or entertaining feel instinctively right.' }
+  ],
+  systemDescription: 'Behind every considered room is a lighting system planned around the architecture. We blend beautiful fixtures, quiet shading and intuitive control so the technology disappears into the experience.',
+  systemImage: 'lighting_005.jpeg',
+  ctaDescription: 'Tell us how you want your home to feel. We will design the light around it.',
+  ctaImage: 'lighting_006.webp'
+} : {
+  heroDescription: 'One intuitive system that brings light, comfort, entertainment and security together—quietly working around the way you live.',
+  intro: 'A whole-home control system brings lighting, climate, shades, music, video and security together so everything works as one—letting you live in your home rather than operate it.',
+  facts: [['60+', 'Projects completed'], ['10+', 'Years of experience'], ['30+', 'Technology partners']],
+  momentsDescription: 'Every detail works together to make the moments at home feel effortless. Lighting, climate, entertainment and security respond naturally to the routines that shape your day, so every room has the right atmosphere without asking you to think about the technology behind it.',
+  moments: [
+    { asset: 'lighting_001.jpg', label: 'Warm architectural lighting in a living room', title: 'Wake gently', description: 'Light and climate ease the home into your day. Shades rise gradually, gentle music begins where you need it, and your most-used rooms are ready before the morning has fully started.' },
+    { asset: 'home_cinema_006.jpg', label: 'Private home cinema', title: 'Set the scene', description: 'One touch brings your room to life for entertainment. Lighting, shading, music and cinema settings work together so an evening with family or friends feels prepared, comfortable and effortless.' },
+    { asset: 'security_surveillance_005.jpg', label: 'Integrated home security', title: 'Leave assured', description: 'Your home is protected, whether you are near or away. A single action can secure doors, arm key systems, lower shades and confirm that every room is set exactly as you expect.' }
+  ],
+  systemDescription: 'Behind every intuitive interaction is a system engineered with care. We bring the essential elements of your home together, then make them feel beautifully simple.',
+  systemImage: 'outdoor_living_002.jpg',
+  ctaDescription: 'Tell us how you want to live. We will design the technology around it.',
+  ctaImage: ''
+};
+const serviceMomentImages: Record<string, string[]> = {
+  'home-theater': ['home_cinema_006.jpg', 'home_cinema_007.jpg', 'home_cinema_004.webp'],
+  'home-audio': ['audio_003.jpg', 'audio_005.jpg', 'audio_018.jpg'],
+  'network-wifi': ['network_wifi_005.jpg', 'network_wifi_006.jpg', 'network_wifi_008.jpg'],
+  'security-access': ['security_surveillance_005.jpg', 'security_surveillance_010.jpg', 'security_surveillance_015.jpg']
+};
+const serviceDetail = !isAutomation && !isLighting ? {
+  heroDescription: service.shortDescription,
+  intro: service.overview,
+  facts: [['Tailored', 'For your home'], ['Seamless', 'Everyday control'], ['Orion', 'Smart integration']],
+  momentsDescription: `${service.overview} Each detail is planned to feel clear, reliable and natural from the moment you use it.`,
+  moments: (serviceMomentImages[service.slug] ?? [service.heroImage, service.featureImage, service.heroImage]).map((asset, index) => ({ asset, label: service.title, title: service.highlights[index] ?? service.title, description: service.overview })),
+  systemDescription: service.overview,
+  systemImage: service.featureImage,
+  ctaDescription: service.shortDescription,
+  ctaImage: ''
+} : editorialDetails;
+---
+
+<BaseLayout title={`${service.title} | Orion`}>
+  <Fragment slot="head"><meta name="description" content={service.shortDescription} /><link rel="canonical" href={canonical} /><meta property="og:title" content={`${service.title} | Orion`} /><meta property="og:description" content={service.shortDescription} /><meta property="og:image" content={socialImage} /></Fragment>
+  {isEditorialService ? (
+  <article class:list={['automation-service', { 'lighting-service': isLighting, 'service-detail-editorial': !isAutomation }]}>
+    <section class="project-showcase-hero service-hero">
+      <Scene asset={service.heroImage} loading="eager" label="A homeowner using integrated smart-home control" />
+      <div class="shell project-showcase-hero__content" data-reveal>
+        <div class="project-showcase-hero__copy automation-hero__copy">
+          <p class="project-category">{service.eyebrow}</p>
+          <h1>{isLighting ? <>Lighting, in<br />perfect balance.</> : isAutomation ? <>Home, in<br />perfect rhythm.</> : <>{service.title}</>}</h1>
+          {!isAutomation && <p class="automation-hero__lighting-copy">{serviceDetail.heroDescription}</p>}
+          <p>One intuitive system that brings light, comfort, entertainment and security together—quietly working around the way you live.</p>
+          <a class="pill-button pill-button--cream" href={`${base}contact/`}>{isAutomation ? 'Plan Your Smart Home' : `Plan Your ${service.title}`} <span aria-hidden="true">↗</span></a>
+        </div>
+        <div class="automation-hero__interface" aria-hidden="true">
+          <p>Thursday, 7:42 PM</p>
+          <strong>Good evening</strong>
+          <div><span>Lighting</span><b>Warm</b></div>
+          <div><span>Climate</span><b>72°</b></div>
+          <div><span>Privacy</span><b>On</b></div>
+        </div>
+        <div class="automation-hero__signal" aria-hidden="true"><span></span><p>Connected<br />with care</p></div>
+      </div>
+      <div class="shell automation-hero__footer" aria-label="Service summary">
+        <span>{service.number} / 06</span>
+        <span>{service.title}</span>
+        <span>Designed around you</span>
+      </div>
+    </section>
+
+    <section class="automation-intro">
+      <div class="shell automation-intro__grid">
+        {!isAutomation && <p class="automation-intro__lighting-copy" data-reveal>{serviceDetail.intro}</p>}
+        <p class="automation-intro__lead" data-reveal>A whole-home control system brings lighting, climate, shades, music, video and security together so everything works as one—letting you live in your home rather than operate it.</p>
+        <dl class="automation-intro__facts" data-reveal>
+          {!isAutomation ? serviceDetail.facts.map(([value, label]) => <div><dt>{value}</dt><dd>{label}</dd></div>) : <><div><dt>60+</dt><dd>Projects completed</dd></div><div><dt>10+</dt><dd>Years of experience</dd></div><div><dt>30+</dt><dd>Technology partners</dd></div></>}
+        </dl>
+      </div>
+    </section>
+
+    <section class="automation-moments" aria-labelledby="automation-moments-title">
+      <div class="shell">
+        <div class="automation-moments__heading" data-reveal>
+          <p class="eyebrow">(designed for real life)</p>
+          <h2 id="automation-moments-title">{isLighting ? <>Light that moves<br />with your day.</> : isAutomation ? <>The right setting,<br />without a second thought.</> : <>Designed for the<br />way you live.</>}</h2>
+          <p>{!isAutomation ? serviceDetail.momentsDescription : 'Every detail works together to make the moments at home feel effortless. Lighting, climate, entertainment and security respond naturally to the routines that shape your day, so every room has the right atmosphere without asking you to think about the technology behind it.'}</p>
+        </div>
+        <div class="automation-moments__grid">
+          {!isAutomation ? serviceDetail.moments.map((moment, index) => <article class:list={['automation-moment', { 'automation-moment--tall': index === 0 }]} data-reveal><Scene asset={moment.asset} label={moment.label} /><div><span>{String(index + 1).padStart(2, '0')}</span><h3>{moment.title}</h3><p>{moment.description}</p></div></article>) : <><article class="automation-moment automation-moment--tall" data-reveal><Scene asset="lighting_001.jpg" label="Warm architectural lighting in a living room" /><div><span>01</span><h3>Wake gently</h3><p>Light and climate ease the home into your day. Shades rise gradually, gentle music begins where you need it, and your most-used rooms are ready before the morning has fully started.</p></div></article><article class="automation-moment" data-reveal><Scene asset="home_cinema_006.jpg" label="Private home cinema" /><div><span>02</span><h3>Set the scene</h3><p>One touch brings your room to life for entertainment. Lighting, shading, music and cinema settings work together so an evening with family or friends feels prepared, comfortable and effortless.</p></div></article><article class="automation-moment" data-reveal><Scene asset="security_surveillance_005.jpg" label="Integrated home security" /><div><span>03</span><h3>Leave assured</h3><p>Your home is protected, whether you are near or away. A single action can secure doors, arm key systems, lower shades and confirm that every room is set exactly as you expect.</p></div></article></>}
+        </div>
+      </div>
+    </section>
+
+    <section class="automation-system" id="automation-included">
+      <div class="shell automation-system__grid">
+        <div class="automation-system__visual" data-reveal>
+          <Scene asset={!isAutomation ? serviceDetail.systemImage : 'outdoor_living_002.jpg'} label={!isAutomation ? `${service.title} in a considered home` : 'A connected luxury residence overlooking the water'} />
+          <div class="automation-system__panel" aria-hidden="true">
+            <p>Good evening</p>
+            <strong>Living</strong>
+            <div><span>Lights</span><b>68%</b></div>
+            <div><span>Climate</span><b>72°</b></div>
+            <div><span>Shades</span><b>Down</b></div>
+          </div>
+        </div>
+        <div class="automation-system__copy" data-reveal>
+          <p class="eyebrow">(the complete experience)</p>
+          <h2>{isLighting ? <>Beautifully layered.<br />Perfectly controlled.</> : isAutomation ? <>Everything connected.<br />Nothing complicated.</> : <>Everything considered.<br />Nothing complicated.</>}</h2>
+          <p>{!isAutomation ? serviceDetail.systemDescription : 'Behind every intuitive interaction is a system engineered with care. We bring the essential elements of your home together, then make them feel beautifully simple.'}</p>
+          <ol>
+            {service.highlights.map((highlight) => <li><span aria-hidden="true"></span><strong>{highlight}</strong></li>)}
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <section class="automation-cta">
+      <video class="automation-cta__video" autoplay muted loop playsinline preload="metadata" aria-hidden="true"><source src={`${base}home-hero.mp4`} type="video/mp4" /></video>
+      <div class="automation-cta__veil"></div>
+      <div class="automation-cta__content" data-reveal>
+        <p class="eyebrow">(begin the conversation)</p>
+        <h2>{isLighting ? <>A home that feels<br />beautifully lit.</> : isAutomation ? <>A home that feels<br />like it knows you.</> : <>{service.title},<br />beautifully integrated.</>}</h2>
+        <p>{!isAutomation ? serviceDetail.ctaDescription : 'Tell us how you want to live. We’ll design the technology around it.'}</p>
+        <a class="pill-button pill-button--cream" href={`${base}contact/`}>{isAutomation ? 'Start a Project' : `Plan Your ${service.title}`} <span aria-hidden="true">↗</span></a>
+      </div>
+    </section>
+
+  </article>
+  ) : (
+  <article class="service-article">
+    <section class="project-showcase-hero service-hero"><Scene asset={service.heroImage} loading="eager" label={service.title} /><div class="shell project-showcase-hero__content" data-reveal><div class="project-showcase-hero__copy"><p class="project-category">{service.eyebrow}</p><h1>{service.title}</h1><p class="hero__description">{service.shortDescription}</p></div></div></section>
+    <section class="service-overview home-section"><div class="shell service-overview__grid"><p class="eyebrow" data-reveal>(the experience)</p><div data-reveal><p class="service-overview__lead">{service.overview}</p><a class="pill-button" href={`${base}contact/`}>Start a Project</a></div></div></section>
+    <section class="shell service-feature-image" data-reveal><Scene asset={service.featureImage} label={`${service.title} in a luxury home`} /></section>
+    <section class="service-highlights"><div class="shell"><div class="section-intro" data-reveal><p class="eyebrow">(what's included)</p><h2>Thoughtfully<br />integrated.</h2></div><ol>{service.highlights.map((highlight, index) => <li data-reveal><span>{String(index + 1).padStart(2, '0')}</span><strong>{highlight}</strong></li>)}</ol></div></section>
+    <a class="next-project next-service" href={`${base}services/${nextService.slug}/`} data-reveal><Scene asset={nextService.heroImage} label={nextService.title} /><div class="next-project__overlay"></div><div class="shell next-project__content"><p class="eyebrow">(next core service)</p><h2>{nextService.title} <span aria-hidden="true">→</span></h2></div></a>
+  </article>
+  )}
+</BaseLayout>

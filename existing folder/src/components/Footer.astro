@@ -1,6 +1,16 @@
+---
+const base = import.meta.env.BASE_URL;
+---
+
 <footer class="site-footer">
   <div class="site-footer__inner">
-    <a class="footer-wordmark" href="/" aria-label="Design and Co home">DESIGN &amp; CO</a>
-    <div class="site-footer__meta"><p>© All rights reserved 2025 - Design &amp; Co</p><div><a href="https://www.instagram.com/aathif.design/" target="_blank" rel="noreferrer">Instagram</a><a href="https://x.com/aathif_designer" target="_blank" rel="noreferrer">Twitter(X)</a></div></div>
+    <div class="footer-grid">
+      <div class="footer-intro"><a class="footer-brand" href={base}><img src={`${base}orion-logo-white.png`} alt="Orion Smart Home Integration Services" /></a><p>Technology, designed around<br />the way you live.</p></div>
+      <div><p class="footer-label">Navigation</p><a href={base}>Home</a><a href={`${base}#services`}>Services</a><a href={`${base}projects/`}>Projects</a><a href={`${base}about/`}>About</a><a href={`${base}contact/`}>Contact</a></div>
+      <div><p class="footer-label">Services</p><a href={`${base}#services`}>Smart Home Automation</a><a href={`${base}#services`}>Lighting &amp; Shading</a><a href={`${base}#services`}>Home Audio</a><a href={`${base}#services`}>Home Cinema</a><a href={`${base}#services`}>Security &amp; Surveillance</a><a href={`${base}#services`}>Networking &amp; Wi-Fi</a></div>
+      <div><p class="footer-label">Contact</p><a href="mailto:hello@eintegrator.com">hello@eintegrator.com</a><a href="tel:+15550147920">+1 555 014 7920</a><span>New York, USA</span><p class="footer-label footer-label--social">Social</p><a href="#">Instagram</a><a href="#">LinkedIn</a></div>
+    </div>
+    <div class="footer-wordmark"><img src={`${base}orion-logo-white.png`} alt="Orion Smart Home Integration Services" /></div>
+    <div class="site-footer__meta"><p>© 2026 Orion. All rights reserved.</p><div><a href="#">Privacy Policy</a><a href="#">Terms</a></div></div>
   </div>
 </footer>

@@ -1,156 +1,266 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import ProjectCard from '../components/ProjectCard.astro';
 import Scene from '../components/Scene.astro';
 import { projects } from '../data/projects';
+import { coreServices } from '../data/services';
+import { assetUrl } from '../utils/asset-url';
 
-const localAssets = import.meta.glob('/src/assets/reference/*.{jpg,jpeg,png,webp}', { eager: true, import: 'default' });
-const imageUrl = (filename: string) => {
-  const asset = localAssets[`/src/assets/reference/${filename}`] as string | { src: string } | undefined;
-  return typeof asset === 'string' ? asset : asset?.src ?? '';
-};
+const base = import.meta.env.BASE_URL;
+const showcaseProjects = [...projects, ...projects, ...projects];
+const showcaseInitialIndex = projects.length;
+const aboutSliderImages = [
+  { asset: 'home_automation_001.png', label: 'Smart home control interface' },
+  { asset: 'lighting_003.jpeg', label: 'Architectural lighting installation' },
+  { asset: 'home_cinema_007.jpg', label: 'Private home cinema' },
+  { asset: 'audio_005.jpg', label: 'Multi-room audio experience' },
+  { asset: 'security_surveillance_010.jpg', label: 'Integrated home security' },
+  { asset: 'network_wifi_006.jpg', label: 'Reliable home connectivity' }
+];
+const aboutSliderSecondRow = [...aboutSliderImages.slice(3), ...aboutSliderImages.slice(0, 3)];
 
-const services = [
-  { title: 'residential interior design', copy: 'We create spaces that reflect your lifestyle, blending comfort, elegance, and timeless design principles.', image: 'HMrCVcCNnaltAP3lZC6h6OUTf0.jpg' },
-  { title: 'Commercial Interior Design', copy: 'We design purposeful environments that enhance brand identity and improve the way people work and connect.', image: 'qWwDecdASA1t2lSe2RfQMhtfso.jpg' },
-  { title: 'Renovation & Project Management', copy: 'We oversee every stage with precision, ensuring each detail aligns seamlessly with your vision and goals.', image: 'K7AbBTGRBAkZezc5X2xGVwJdK8.jpg' }
+const approach = [
+  { title: 'Simple', copy: 'Technology should make the home easier to use, not more complicated.', image: 'home_automation_001.png' },
+  { title: 'Integrated', copy: 'Every system should work together as one connected experience.', image: 'network_wifi_005.jpg' },
+  { title: 'Discreet', copy: 'The best technology supports the architecture without competing with it.', image: 'lighting_004.jpeg' }
 ];
-const philosophy = [
-  { title: 'simplicity', copy: 'We value clean lines and thoughtful restraint, allowing each element to breathe and serve a purpose.', image: 'JUjPplDK6mgLCGvvNPBFDrYzOo.jpg' },
-  { title: 'Harmony', copy: 'Every space should feel cohesive — a seamless blend of materials, colors, and light designed to inspire calm and comfort.', image: 'TOIXoQgHc6JwZYEmsAPT9kwxn8.jpg' },
-  { title: 'Longevity', copy: 'We design with intention, ensuring each decision stands the test of time in both style and quality.', image: 'ueCM9pzwra62pz1MY8egWqtwqvI.jpg' }
-];
+
 const team = [
-  { name: 'Ethan Cole', role: 'Lead Interior Designer', image: '6mHhTWIhC3bs9HgC27vM9jkW7Bo.jpg', bio: 'Ethan brings over a decade of experience in crafting timeless interiors that balance form and function. His design philosophy revolves around creating spaces that reflect personality while maintaining modern elegance.' },
-  { name: 'Lucas Grant', role: 'Creative Director', image: 'Npf2mL8C2QlQOxhCQwlJx3L1WKU.jpg', bio: 'Lucas oversees the studio’s creative vision, ensuring every project delivers a distinctive atmosphere. With a strong eye for color, lighting, and texture, he transforms ordinary rooms into meaningful experiences.' },
-  { name: 'Noah Reed', role: 'Senior Architect', image: 'NFdOHYJK8wDzkD8QYFsdj4e9ZY.jpg', bio: 'Noah specializes in spatial design and architectural planning. His structural expertise and attention to proportion ensure that every concept transitions seamlessly from design to execution.' },
-  { name: 'Adrian Blake', role: 'Project Manager', image: 'LJ7U8GR5Ni8iUsdFoywhefKoc.jpg', bio: 'Adrian coordinates project timelines, client communication, and on-site execution. With his background in construction management, he ensures every design is delivered with precision and efficiency.' }
+  { role: 'Technology Director', image: 'audio_001.jpg', bio: 'Guiding every project from the first conversation through a refined, dependable technology experience.' },
+  { role: 'Systems Designer', image: 'lighting_003.jpeg', bio: 'Designing intuitive control, lighting and entertainment systems around each home and its architecture.' },
+  { role: 'Project Manager', image: 'outdoor_living_003.jpg', bio: 'Coordinating details, trades and timelines so installation feels considered from start to finish.' },
+  { role: 'Integration Specialist', image: 'network_wifi_006.jpg', bio: 'Programming and commissioning every connected system for simple, reliable everyday use.' }
 ];
+
 const testimonials = [
-  { name: 'Emma Collins', role: 'House Owner', avatar: 'remKYFiHD3hHi6r6nkLMgUl38Go.jpg', background: 'lVdV1MiB2EiktdICNa5kk9xSeM.jpg', quote: '“From the first meeting, they understood our vision completely. The final design feels effortless — every room flows beautifully and captures exactly what we hoped for.”' },
-  { name: 'Paul Richards', role: 'Creative Director, Atelier Maison', avatar: '5bJDhuqVzyVmWnb9TYEjGANPdPg.jpg', background: 'bA6pm3kKCsRbvGPvpS2gO3UANI0.jpg', quote: 'The design perfectly balances functionality and beauty. Their thoughtful approach made the process seamless from concept to completion, with results beyond imagination.' },
-  { name: 'Clara Jensen', role: 'Residential Client', avatar: '75GeAmOoiSljnB9XedBH5Ili9Kg.jpg', background: 'clANltkimMrgnAQNdfI1xzsQ.jpg', quote: '“Their ability to translate our brand into a physical space was remarkable. Every detail, from materials to lighting, reflects the atmosphere we wanted our guests to feel.”' },
-  { name: 'Luca Moretti', role: 'Hospitality Manager, The Noven Hotel', avatar: 'O7ZUCGJxFfKEUYDzLAX5mVPMcwM.jpg', background: 'j9gPKNvPrDwsjhKD8ao16oYL8E.jpg', quote: '“The team understood our vision immediately and brought it to life with refined simplicity. The result exceeded every expectation and inspired future ideas.' }
+  { name: 'Private Homeowner', role: 'Residential Project', background: 'outdoor_living_001.jpg', quote: '“Orion transformed the way we experience our home. Everything from lighting and music to security now works together effortlessly.”' },
+  { name: 'Private Homeowner', role: 'Whole Home Upgrade', background: 'lighting_002.jpeg', quote: '“The technology feels almost invisible. The house simply responds the way we want it to.”' },
+  { name: 'Private Homeowner', role: 'New Construction', background: 'home_cinema_006.jpg', quote: '“Every detail was considered. We have powerful technology, yet the home still feels calm and beautifully resolved.”' }
 ];
+
 const faqs = [
-  ['What services do you offer?', 'We provide full interior design services including space planning, styling, and project management.'],
-  ['Do you handle both residential and commercial projects?', 'Yes, we work on a variety of spaces — from private homes to modern offices.'],
-  ['How long does a typical project take?', 'Timelines vary by scope, but most projects are completed within 8–12 weeks.'],
-  ['Can you work with my existing furniture?', 'Absolutely. We love blending new design elements with your existing pieces.'],
-  ['How can I start a project with you?', 'Simply reach out through our contact form, and we’ll schedule an initial consultation.']
+  ['What is smart home integration?', 'Smart home integration connects your home technology into one simple and coordinated control experience.'],
+  ['Can you integrate technology into an existing home?', 'Yes. Solutions can be designed for new construction and existing properties depending on infrastructure and project requirements.'],
+  ['Can different brands work together?', 'Yes. We design systems that allow compatible technology from different manufacturers to work together seamlessly.'],
+  ['Do you provide ongoing support?', 'Yes. Orion can provide ongoing support, system updates and maintenance after installation.'],
+  ['Can I control my home remotely?', 'Yes. Supported systems can provide secure control of lighting, climate, security and entertainment from compatible mobile devices.']
 ];
 ---
-<BaseLayout>
-  <section class="hero hero--home" id="hero">
-    <Scene asset="Ccy1uQ02SCJ8HiMkVcGWyTM6alk.jpg" loading="eager" label="Modern interior design space" />
-    <div class="shell hero__content" data-reveal>
-      <div class="hero__copy">
-        <p class="location-chip"><span>⌖</span> Based in New York, USA</p>
-        <h1>Timeless Interiors.<br />Crafted for You.</h1>
-        <p class="hero__description">We create refined spaces that blend comfort, beauty, and lasting design — tailored to the way you live.</p>
-        <a class="pill-button pill-button--cream" href="#project">See Projects</a>
+
+<BaseLayout title="Orion | Smart Home Integration Services">
+  <section class="hero hero--home" id="home">
+    <video class="home-hero__video" autoplay muted loop playsinline preload="auto" poster={assetUrl('home_automation_001.png')} aria-label="A walkthrough of a considered interior space">
+      <source src={`${base}home-hero.mp4`} type="video/mp4" />
+    </video>
+    <div class="home-hero__veil"></div>
+    <div class="shell hero__content home-hero__content" data-reveal>
+      <div class="hero__copy home-hero__copy">
+        <h1>Intelligent Home<br />Simplified</h1>
+        <p>We design and install integrated home technology systems tailored to your space and your lifestyle.</p>
+        <div class="home-hero__actions">
+          <a class="home-hero__secondary" href={`${base}contact/`}>Call or Text Us</a>
+          <a class="pill-button home-hero__primary" href={`${base}consultation/`} data-static-cta>Schedule a Consultation <span aria-hidden="true">↗</span></a>
+        </div>
+      </div>
+    </div>
+    <div class="home-hero__scroll" aria-hidden="true"><span></span>Scroll to explore</div>
+    <div class="home-hero__surface">
+      <div class="home-hero__grid" data-reveal>
+        <div class="home-hero__copy">
+          <h1>Technology that<br />feels effortless.</h1>
+          <p>We bring lighting, entertainment, climate, security and connectivity together into one beautiful, intuitive home experience.</p>
+          <a class="pill-button hero__cta" href="#projects" data-static-cta>Explore Our Work <span aria-hidden="true">↗</span></a>
+          <div class="home-hero__stats" aria-label="Orion statistics">
+            <div><strong>60+</strong><span>Projects<br />completed</span></div>
+            <div><strong>10+</strong><span>Years of<br />experience</span></div>
+            <div><strong>30+</strong><span>Technology<br />partners</span></div>
+          </div>
+        </div>
+        <div class="home-hero__visuals">
+          <Scene asset="lighting_001.jpg" loading="eager" label="Architectural lighting in a luxury home" />
+          <Scene asset="home_automation_001.png" loading="eager" label="Orion smart home control" />
+        </div>
       </div>
     </div>
   </section>
 
-  <section class="home-section works-section" id="project"><div class="shell">
-    <div class="section-intro" data-reveal><p class="eyebrow">(works)</p><h2>Featured works</h2></div>
-    <div class="projects-grid" data-reveal>{projects.slice(0, 4).map((project) => <ProjectCard project={project} />)}</div>
-    <div class="center-button" data-reveal><a class="pill-button" href="/projects/">View all</a></div>
-  </div></section>
+  <section class="who-we-are-section" id="who-we-are">
+    <div class="who-we-are__surface">
+      <div class="who-we-are__grid">
+        <Scene asset="outdoor_living_002.jpg" label="Orion connected luxury home" />
+        <div class="who-we-are__copy">
+          <p class="eyebrow">(who we are)</p>
+          <h2>Technology, Designed<br />for the Way You Live.</h2>
+          <p>At Orion, we create intelligent home environments where lighting, entertainment, climate, security and connectivity feel effortless from the first day.</p>
+          <div class="who-we-are__list">
+            <article class="who-we-are__item is-open"><button class="who-we-are__toggle" type="button" aria-expanded="true"><span>Designed Around You</span><i aria-hidden="true">+</i></button><div class="who-we-are__panel"><p>Every system begins with the people, spaces and routines it is designed to support.</p></div></article>
+            <article class="who-we-are__item"><button class="who-we-are__toggle" type="button" aria-expanded="false"><span>Integrated With Care</span><i aria-hidden="true">+</i></button><div class="who-we-are__panel"><p>Our work brings trusted technology together with a quiet, architectural approach to installation.</p></div></article>
+          </div>
+          <a class="pill-button" href={`${base}about/`}>Learn More <span aria-hidden="true">↗</span></a>
+        </div>
+      </div>
+    </div>
+  </section>
 
-  <section class="home-section about-section" id="about"><div class="shell">
-    <div class="section-intro" data-reveal><p class="eyebrow">(about)</p><h2>Designing Interiors with<br />Purpose and Precision</h2></div>
-    <div class="about-grid"><Scene asset="bJNj6NXoXoIvo22mXzc3o9O4wI.jpg" label="About section interior" /><div class="about-grid__copy" data-reveal>
-      <p>We approach every space as a balance of function, form, and feeling. Through thoughtful materials, light, and texture, we create interiors that reflect individuality while standing the test of time.</p>
-      <a class="pill-button" href="#contact">Get in Touch</a>
-      <div class="stats"><div><strong data-stat-target="60">0+</strong><span>Projects Completed</span></div><div><strong data-stat-target="10">0+</strong><span>Years of Experience</span></div><div><strong data-stat-target="30">0+</strong><span>Awards &amp; Recognition</span></div></div>
-    </div></div>
-  </div></section>
+  <section class="project-showcase" id="projects" data-project-showcase data-project-count={projects.length} data-project-initial-index={showcaseInitialIndex}>
+    <div class="project-showcase__surface">
+      <div class="project-showcase__heading">
+        <p class="eyebrow">(featured projects)</p>
+        <h2>Selected Integrations</h2>
+        <p>Explore a selection of intelligent home environments, designed to feel as natural as the spaces they support.</p>
+      </div>
+      <div class="project-showcase__slider" data-project-slider>
+        <div class="project-showcase__viewport" data-project-viewport tabindex="0" aria-label="Featured Orion projects">
+          <div class="project-showcase__track">
+            {showcaseProjects.map((project, index) => (
+              <a class:list={['project-showcase__card', { 'is-current': index === showcaseInitialIndex }]} href={`${base}projects/${project.slug}/`} data-project-card data-project-real-index={index % projects.length} aria-label={`View ${project.title}`}>
+                <Scene asset={project.thumbnailImage} label={project.title} loading={index === showcaseInitialIndex ? 'eager' : 'lazy'} />
+                <span class="project-showcase__shade" aria-hidden="true"></span>
+                <span class="project-showcase__card-copy"><span>Completed · {project.year}</span><strong>{project.title}</strong><em>{project.category}</em></span>
+              </a>
+            ))}
+          </div>
+        </div>
+        <div class="project-showcase__footer">
+          <div class="project-showcase__navigation">
+            <button type="button" data-project-prev aria-label="Previous project">&#8592;</button>
+            <span data-project-current aria-live="polite">01 / {String(projects.length).padStart(2, '0')}</span>
+            <button type="button" data-project-next aria-label="Next project">&#8594;</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-  <section class="home-section services-section" id="services"><div class="shell">
-    <div class="section-intro section-intro--center" data-reveal><p class="eyebrow">(services)</p><h2>Design Services<br />Tailored to You</h2></div>
-    <div class="services-list">{services.map((service) => <article class="service-row" data-reveal><div class="service-row__copy"><h3>{service.title}</h3><p>{service.copy}</p><a class="pill-button" href="#contact">Book this Service</a></div><Scene asset={service.image} label={`${service.title} interior`} /></article>)}</div>
-  </div></section>
 
-  <section class="home-section testimonial-section" id="testimonial"><div class="shell">
-    <div class="section-intro section-intro--center" data-reveal><p class="eyebrow">(testimonials)</p><h2>What Our<br />Clients Say</h2></div>
-    <article class="testimonial-card" data-reveal><Scene asset={testimonials[0].background} label="Testimonial interior" /><div class="testimonial-card__overlay"></div><div class="testimonial-card__content"><blockquote data-testimonial-quote>{testimonials[0].quote}</blockquote><div class="testimonial-card__author"><div><strong data-testimonial-name>{testimonials[0].name}</strong><span data-testimonial-role>{testimonials[0].role}</span></div><div class="testimonial-card__avatars" aria-label="Choose a testimonial">{testimonials.map((testimonial, index) => <button class:list={['testimonial-card__avatar', { 'is-selected': index === 0 }]} type="button" data-testimonial-avatar data-quote={testimonial.quote} data-name={testimonial.name} data-role={testimonial.role} data-background={imageUrl(testimonial.background)} aria-pressed={index === 0 ? 'true' : 'false'}><Scene asset={testimonial.avatar} label={`${testimonial.name} portrait`} /></button>)}</div></div></div></article>
-  </div></section>
+  <section class="home-section services-section" id="services">
+    <div class="shell">
+      <div class="section-intro section-intro--center" data-reveal><p class="eyebrow">(our services)</p><h2>Technology Tailored<br />to Your Home</h2></div>
+      <div class="services-list">
+        {coreServices.map((service) => <article class="service-row" id={`service-${service.slug}`}><div class="service-row__copy"><p class="eyebrow">({service.number})</p><h3>{service.title}</h3><p>{service.shortDescription}</p><a class="pill-button" href={`${base}services/${service.slug}/`}>Explore Service</a></div><Scene asset={service.heroImage} label={service.title} /></article>)}
+      </div>
+    </div>
+  </section>
 
-  <section class="home-section philosophy-section" id="philosophy"><div class="shell">
-    <div class="section-intro" data-reveal><p class="eyebrow">(philosophy)</p><h2>Our Design Philosophy</h2></div>
-    <div class="philosophy-grid">{philosophy.map((item) => <article class="philosophy-card" data-reveal><Scene asset={item.image} label={`${item.title} interior`} /><div><h3>{item.title}</h3><p>{item.copy}</p></div></article>)}</div>
-  </div></section>
+    <section class="about-sliders-section" id="about">
+    <!-- <div class="shell about-sliders-section__intro" data-reveal>
+      <p class="eyebrow">(about orion)</p>
+      <div>
+        <h2>Technology Made<br />Effortlessly Simple</h2>
+        <p>Orion brings lighting, entertainment, climate, security, networking and smart-home control together into one beautifully integrated experience.</p>
+      </div>
+    </div> -->
+    <div class="about-sliders" aria-label="Orion technology systems" role="region">
+      <div class="about-sliders__container">
+        <div class="about-slider" data-about-slider data-duration="77" data-reversed="false" data-width="112">
+          <div class="about-slider__drag">
+          <div class="about-sliders__group">
+            {aboutSliderImages.map((image) => <div class="about-sliders__card"><Scene asset={image.asset} label={image.label} /></div>)}
+          </div>
+          <div class="about-sliders__group" aria-hidden="true">
+            {aboutSliderImages.map((image) => <div class="about-sliders__card"><Scene asset={image.asset} label="" /></div>)}
+          </div>
+        </div>
+      </div>
+      </div>
+      <div class="about-sliders__container">
+        <div class="about-slider" data-about-slider data-duration="77" data-reversed="true" data-width="112">
+          <div class="about-slider__drag">
+          <div class="about-sliders__group">
+            {aboutSliderSecondRow.map((image) => <div class="about-sliders__card"><Scene asset={image.asset} label={image.label} /></div>)}
+          </div>
+          <div class="about-sliders__group" aria-hidden="true">
+            {aboutSliderSecondRow.map((image) => <div class="about-sliders__card"><Scene asset={image.asset} label="" /></div>)}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-  <section class="team-section" id="team"><div class="shell">
-    <div class="section-intro" data-reveal><p class="eyebrow">(team)</p><h2>The Minds Behind<br />the Design</h2></div>
-    <div class="team-grid">{team.map((member, index) => <article class="team-card" data-reveal><Scene asset={member.image} label={`${member.name} profile`} /><button class="team-card__summary" type="button" data-team-toggle aria-expanded="false" aria-controls={`team-bio-${index}`}><span class="team-card__copy"><span class="team-card__name">{member.name}</span><span class="team-card__role">{member.role}</span></span><i aria-hidden="true">+</i></button><p class="team-card__bio" id={`team-bio-${index}`}>{member.bio}</p></article>)}</div>
-  </div></section>
 
-  <section class="home-section faq-section" id="faq"><div class="shell shell--narrow">
-    <div class="section-intro section-intro--center" data-reveal><p class="eyebrow">(faq)</p><h2>Frequently Asked Questions</h2></div>
-    <div class="faq-list">{faqs.map(([question, answer]) => <details data-reveal><summary>{question}<span>+</span></summary><p>{answer}</p></details>)}</div>
-  </div></section>
 
-  <section class="contact-section" id="contact"><div class="shell">
-    <div class="section-intro" data-reveal><p class="eyebrow">(contact)</p><h2>GET IN TOUCH</h2></div>
-    <div class="contact-grid"><div class="contact-grid__details" data-reveal><dl><dt>address</dt><dd><a href="https://maps.app.goo.gl/fake-address-248-mercer-street" target="_blank" rel="noreferrer">248 Mercer Street, Suite 4B, New York, NY 10012</a></dd><dt>e-mail</dt><dd><a href="mailto:info@design&co.com">info@design&amp;co.com</a></dd><dt>phone</dt><dd>+44 7821 445 903</dd><dt>hours</dt><dd>Monday to Friday, 8:30am - 5:00pm</dd></dl><Scene asset="CGZmJVnE2KOSOnoGPQF1CqO69w.jpg" label="Contact interior" /></div><form class="contact-form" action="/" method="post" data-reveal><label>Name<input name="Name" placeholder="Jane Smith" required /></label><label>Email<input name="Email" type="email" placeholder="jane@framer.com" required /></label><label>Message<textarea name="Message" rows="5"></textarea></label><button class="pill-button" type="submit">Submit</button></form></div>
-  </div></section>
-<script>
-  const testimonialQuote = document.querySelector<HTMLElement>('[data-testimonial-quote]');
-  const testimonialName = document.querySelector<HTMLElement>('[data-testimonial-name]');
-  const testimonialRole = document.querySelector<HTMLElement>('[data-testimonial-role]');
-  const testimonialImage = document.querySelector<HTMLImageElement>('.testimonial-card > .scene .scene__image');
-  const testimonialButtons = document.querySelectorAll<HTMLButtonElement>('[data-testimonial-avatar]');
-  let testimonialIndex = 0;
+  <!-- <section class="home-section faq-section" id="faq"><div class="shell shell--narrow"><div class="section-intro section-intro--center" data-reveal><p class="eyebrow">(faq)</p><h2>Frequently Asked Questions</h2></div><div class="faq-list">{faqs.map(([question, answer]) => <details data-reveal><summary>{question}<span>+</span></summary><p>{answer}</p></details>)}</div></div></section> -->
 
-  const selectTestimonial = (button: HTMLButtonElement) => {
-    testimonialButtons.forEach((item) => {
-      const selected = item === button;
-      item.classList.toggle('is-selected', selected);
-      item.setAttribute('aria-pressed', String(selected));
-    });
-    testimonialIndex = Array.from(testimonialButtons).indexOf(button);
-    if (testimonialQuote) testimonialQuote.textContent = button.dataset.quote ?? '';
-    if (testimonialName) testimonialName.textContent = button.dataset.name ?? '';
-    if (testimonialRole) testimonialRole.textContent = button.dataset.role ?? '';
-    if (testimonialImage && button.dataset.background) testimonialImage.src = button.dataset.background;
-  };
+  <section class="contact-cta" id="contact" data-contact-cta>
+    <div class="contact-cta__media"><Scene asset="audio_001.jpg" loading="lazy" label="Integrated home entertainment and lighting" /></div>
+    <div class="contact-cta__shade" aria-hidden="true"></div>
+    <div class="shell contact-cta__content">
+      <h2>Let’s talk about<br />your home—we’re<br />ready when you are.</h2>
+      <p class="contact-cta__intro">Every exceptional system starts with a conversation. Tell us how you live, and we’ll create technology that feels considered from the very first day.</p>
+      <aside class="contact-cta__card" aria-label="Start a project with Orion">
+        <div class="contact-cta__card-head">
+          <div class="contact-cta__avatar"><Scene asset="home_automation_001.png" label="Orion smart home specialist" /></div>
+          <div><strong>Orion</strong><span>Smart home specialists</span></div>
+          <i aria-hidden="true">✦</i>
+        </div>
+        <div class="contact-cta__card-body">
+          <p>With clarity, care, and technology designed around you.</p>
+          <a class="contact-cta__button" href={`${base}contact/`}>Get a Quote <span aria-hidden="true">↗</span></a>
+        </div>
+      </aside>
+    </div>
+  </section>
 
-  testimonialButtons.forEach((button) => button.addEventListener('click', () => selectTestimonial(button)));
-  if (testimonialButtons.length > 1) {
-    window.setInterval(() => selectTestimonial(testimonialButtons[(testimonialIndex + 1) % testimonialButtons.length]), 15000);
-  }
+  <script>
+    const quote = document.querySelector<HTMLElement>('[data-testimonial-quote]'); const name = document.querySelector<HTMLElement>('[data-testimonial-name]'); const role = document.querySelector<HTMLElement>('[data-testimonial-role]'); const image = document.querySelector<HTMLImageElement>('.testimonial-card > .scene .scene__image'); const buttons = document.querySelectorAll<HTMLButtonElement>('[data-testimonial-avatar]');
+    buttons.forEach((button) => button.addEventListener('click', () => { buttons.forEach((item) => { const active = item === button; item.classList.toggle('is-selected', active); item.setAttribute('aria-pressed', String(active)); }); if (quote) quote.textContent = button.dataset.quote ?? ''; if (name) name.textContent = button.dataset.name ?? ''; if (role) role.textContent = button.dataset.role ?? ''; if (image && button.dataset.background) image.src = button.dataset.background; }));
+    const stats = document.querySelectorAll<HTMLElement>('[data-stat-target]'); const observer = new IntersectionObserver((entries) => { if (!entries.some((entry) => entry.isIntersecting)) return; stats.forEach((stat) => { const target = Number(stat.dataset.statTarget); stat.textContent = `${target}+`; }); observer.disconnect(); }, { threshold: .35 }); if (stats[0]) observer.observe(stats[0]);
+    document.querySelectorAll<HTMLButtonElement>('[data-team-toggle]').forEach((button) => button.addEventListener('click', () => { const open = button.getAttribute('aria-expanded') === 'true'; button.setAttribute('aria-expanded', String(!open)); button.closest<HTMLElement>('.team-card')?.classList.toggle('is-open', !open); }));
+    document.querySelectorAll<HTMLButtonElement>('.who-we-are__toggle').forEach((button) => button.addEventListener('click', () => { const item = button.closest<HTMLElement>('.who-we-are__item'); const open = item?.classList.contains('is-open') ?? false; document.querySelectorAll<HTMLElement>('.who-we-are__item').forEach((entry) => { entry.classList.remove('is-open'); entry.querySelector<HTMLButtonElement>('.who-we-are__toggle')?.setAttribute('aria-expanded', 'false'); }); if (!open) { item?.classList.add('is-open'); button.setAttribute('aria-expanded', 'true'); } }));
+    const projectShowcase = document.querySelector<HTMLElement>('[data-project-showcase]');
+    const projectViewport = projectShowcase?.querySelector<HTMLElement>('[data-project-viewport]');
+    const projectTrack = projectShowcase?.querySelector<HTMLElement>('.project-showcase__track');
+    const projectCards = Array.from(projectShowcase?.querySelectorAll<HTMLElement>('[data-project-card]') ?? []);
+    const projectPrevious = projectShowcase?.querySelector<HTMLButtonElement>('[data-project-prev]');
+    const projectNext = projectShowcase?.querySelector<HTMLButtonElement>('[data-project-next]');
+    const projectCurrent = projectShowcase?.querySelector<HTMLElement>('[data-project-current]');
+    const projectRealCount = Number(projectShowcase?.dataset.projectCount ?? 0);
+    let projectActiveIndex = Number(projectShowcase?.dataset.projectInitialIndex ?? Math.floor(projectCards.length / 2));
+    let projectDragStartX = 0;
+    let projectDragStartOffset = 0;
+    let projectIsDragging = false;
+    let projectOffset = 0;
+    let projectSuppressClick = false;
 
-  const stats = document.querySelectorAll<HTMLElement>('[data-stat-target]');
-  const countStats = () => stats.forEach((stat) => {
-    if (stat.dataset.counted === 'true') return;
-    stat.dataset.counted = 'true';
-    const target = Number(stat.dataset.statTarget ?? 0);
-    const duration = 2300;
-    const startedAt = performance.now();
-    const tick = (now: number) => {
-      const progress = Math.min((now - startedAt) / duration, 1);
-      const eased = 1 - Math.pow(1 - progress, 4);
-      stat.textContent = `${Math.round(target * eased)}+`;
-      if (progress < 1) requestAnimationFrame(tick);
+    const projectOffsetFor = (index: number) => {
+      if (!projectViewport || !projectCards[index]) return 0;
+      const card = projectCards[index];
+      if (window.matchMedia('(max-width: 809px)').matches) return -card.offsetLeft;
+      return projectViewport.clientWidth / 2 - (card.offsetLeft + card.offsetWidth / 2);
     };
-    requestAnimationFrame(tick);
-  });
-  const statsObserver = new IntersectionObserver((entries) => {
-    if (entries.some((entry) => entry.isIntersecting)) {
-      countStats();
-      statsObserver.disconnect();
-    }
-  }, { threshold: .35 });
-  if (stats[0]) statsObserver.observe(stats[0]);
 
-  document.querySelectorAll<HTMLButtonElement>('[data-team-toggle]').forEach((button) => button.addEventListener('click', () => {
-    const card = button.closest<HTMLElement>('.team-card');
-    const opened = button.getAttribute('aria-expanded') === 'true';
-    button.setAttribute('aria-expanded', String(!opened));
-    card?.classList.toggle('is-open', !opened);
-  }));
-</script>
+    const setProjectTrack = (index: number, animate = true) => {
+      if (!projectTrack || !projectCards.length) return;
+      projectActiveIndex = index;
+      projectOffset = projectOffsetFor(index);
+      projectTrack.classList.toggle('is-animating', animate);
+      projectTrack.style.transform = `translate3d(${projectOffset}px, 0, 0)`;
+      projectCards.forEach((card, cardIndex) => card.classList.toggle('is-current', cardIndex === projectActiveIndex));
+      const realIndex = Number(projectCards[projectActiveIndex].dataset.projectRealIndex ?? 0);
+      if (projectCurrent) projectCurrent.textContent = `${String(realIndex + 1).padStart(2, '0')} / ${String(projectRealCount).padStart(2, '0')}`;
+    };
+
+    const moveProject = (direction: number) => {
+      if (!projectRealCount || !projectCards.length) return;
+      setProjectTrack(projectActiveIndex + direction);
+    };
+
+    if (projectViewport && projectTrack && projectCards.length && projectRealCount) {
+      requestAnimationFrame(() => setProjectTrack(projectActiveIndex, false));
+      projectTrack.addEventListener('transitionend', (event) => {
+        if (event.propertyName !== 'transform') return;
+        if (projectActiveIndex >= projectRealCount * 2) setProjectTrack(projectActiveIndex - projectRealCount, false);
+        if (projectActiveIndex < projectRealCount) setProjectTrack(projectActiveIndex + projectRealCount, false);
+      });
+      window.addEventListener('resize', () => setProjectTrack(projectActiveIndex, false));
+      projectViewport.addEventListener('pointerdown', (event) => { projectIsDragging = true; projectSuppressClick = false; projectDragStartX = event.clientX; projectDragStartOffset = projectOffset; projectViewport.setPointerCapture(event.pointerId); projectViewport.classList.add('is-dragging'); projectTrack.classList.remove('is-animating'); });
+      projectViewport.addEventListener('pointermove', (event) => { if (!projectIsDragging) return; const distance = event.clientX - projectDragStartX; if (Math.abs(distance) > 6) projectSuppressClick = true; projectTrack.style.transform = `translate3d(${projectDragStartOffset + distance}px, 0, 0)`; });
+      const stopProjectDrag = (event: PointerEvent) => { if (!projectIsDragging) return; projectIsDragging = false; projectViewport.classList.remove('is-dragging'); const distance = event.clientX - projectDragStartX; const threshold = projectCards[0].offsetWidth * .14; if (Math.abs(distance) > threshold) moveProject(distance < 0 ? 1 : -1); else setProjectTrack(projectActiveIndex); };
+      projectViewport.addEventListener('pointerup', stopProjectDrag);
+      projectViewport.addEventListener('pointercancel', stopProjectDrag);
+      projectViewport.addEventListener('click', (event) => { if (projectSuppressClick) { event.preventDefault(); event.stopPropagation(); projectSuppressClick = false; } }, true);
+    }
+    projectPrevious?.addEventListener('click', () => moveProject(-1));
+    projectNext?.addEventListener('click', () => moveProject(1));
+
+  </script>
 </BaseLayout>

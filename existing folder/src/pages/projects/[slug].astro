@@ -2,66 +2,40 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Scene from '../../components/Scene.astro';
 import { projects } from '../../data/projects';
+import { assetUrl } from '../../utils/asset-url';
 
 export function getStaticPaths() {
   return projects.map((project) => ({ params: { slug: project.slug }, props: { project } }));
 }
 
 const { project } = Astro.props;
-const index = projects.findIndex((item) => item.slug === project.slug);
-const previous = projects[index - 1];
-const next = projects[index + 1];
-const gallery = project.gallery.slice(1);
+const currentIndex = projects.findIndex((item) => item.slug === project.slug);
+const nextProject = projects[(currentIndex + 1) % projects.length];
+const base = import.meta.env.BASE_URL;
+const canonical = new URL(Astro.url.pathname, Astro.site).toString();
+const socialImage = new URL(assetUrl(project.heroImage), Astro.site).toString();
 ---
 
-<BaseLayout title={`${project.title} — Design & Co`}>
-  <section class="project-showcase-hero">
-    <Scene tone={project.scene} asset={project.image} loading="eager" label={`${project.title} hero visual`} />
-    <div class="shell project-showcase-hero__content" data-reveal>
-      <div class="project-showcase-hero__copy">
-        <div class="project-showcase-hero__heading">
-          <a class="back-link" href="/projects/" aria-label="Back to projects">←</a>
-          <h1>{project.title}</h1>
-        </div>
-        <p class="location-chip"><span>⌖</span>{project.location}</p>
-      </div>
-    </div>
-  </section>
+<BaseLayout title={`${project.title} | Orion`}>
+  <Fragment slot="head"><meta name="description" content={project.shortDescription} /><link rel="canonical" href={canonical} /><meta property="og:title" content={`${project.title} | Orion`} /><meta property="og:description" content={project.shortDescription} /><meta property="og:image" content={socialImage} /></Fragment>
+  <article class="project-article">
+    <section class="project-showcase-hero project-article__hero">
+      <Scene tone="sand" asset={project.heroImage} loading="eager" label={project.title} />
+      <div class="shell project-showcase-hero__content" data-reveal><div class="project-showcase-hero__copy"><p class="project-category">{project.category}</p><h1>{project.title}</h1><p class="location-chip">{project.location} <span aria-hidden="true">/</span> {project.year}</p></div></div>
+    </section>
 
-  <section class="project-overview">
-    <div class="shell">
-      <div class="project-overview__intro" data-reveal>
-        <p class="eyebrow">(project description)</p>
-        <p class="detail-copy">{project.description}</p>
-      </div>
-      <div class="project-overview__body">
-        <Scene tone={project.scene} asset={project.gallery[0]} label={`${project.title} interior showcase`} />
-        <dl class="project-meta" data-reveal>
-          <div><dt>Category</dt><dd>{project.category}</dd></div>
-          <div><dt>Client</dt><dd>{project.client}</dd></div>
-          <div><dt>Year</dt><dd>{project.year}</dd></div>
-          <div><dt>Services</dt><dd>{project.services.map((service) => <span class="service-tag">{service}</span>)}</dd></div>
-        </dl>
-      </div>
-    </div>
-  </section>
+    <section class="project-intro home-section"><div class="shell project-intro__grid"><p class="eyebrow" data-reveal>(project overview)</p><div data-reveal><p class="project-intro__lead">{project.overview}</p><dl class="project-facts"><div><dt>Service</dt><dd>{project.service}</dd></div><div><dt>Project Type</dt><dd>{project.clientType}</dd></div><div><dt>Year</dt><dd>{project.year}</dd></div><div><dt>Location</dt><dd>{project.location}</dd></div></dl></div></div></section>
 
-  <section class="project-gallery">
-    <div class="shell project-gallery__grid">
-      {gallery.map((asset, galleryIndex) => <Scene tone={galleryIndex % 2 ? project.scene : 'sand'} asset={asset} label={`${project.title} gallery visual ${galleryIndex + 3}`} />)}
-    </div>
-  </section>
+    <section class="shell project-feature-image" data-reveal><Scene asset={project.featureImage} label={`${project.title} feature`} /></section>
 
-  <nav class="shell project-pagination" aria-label="Project navigation">
-    {previous ? <a href={`/projects/${previous.slug}/`}>← Previous</a> : <span />}
-    {next ? <a href={`/projects/${next.slug}/`}>Next →</a> : <span />}
-  </nav>
+    <section class="home-section project-story"><div class="shell project-story__grid"><div data-reveal><p class="eyebrow">(the challenge)</p><h2>{project.challenge}</h2></div><div data-reveal><p class="eyebrow">(the solution)</p><p class="project-story__copy">{project.solution}</p><Scene asset={project.galleryImages[1]} label={`${project.title} solution`} /></div></div></section>
 
-  <section class="project-cta" data-reveal>
-    <div>
-      <h2>let’s create something timeless</h2>
-      <p>Have a project in mind? Let’s bring your vision to life.</p>
-      <a class="pill-button pill-button--cream" href="/#contact">Start your project</a>
-    </div>
-  </section>
+    <section class="project-highlights"><div class="shell"><div class="section-intro" data-reveal><p class="eyebrow">(system highlights)</p><h2>Designed to work<br />as one.</h2></div><ol>{project.systemHighlights.map((highlight, index) => <li data-reveal><span>{String(index + 1).padStart(2, '0')}</span><strong>{highlight}</strong></li>)}</ol></div></section>
+
+    <section class="home-section project-gallery-section"><div class="shell"><div class="section-intro" data-reveal><p class="eyebrow">(project gallery)</p><h2>Quiet technology,<br />beautifully integrated.</h2></div><div class="project-gallery-editorial">{project.galleryImages.map((image, index) => <Scene asset={image} label={`${project.title} gallery ${index + 1}`} />)}</div></div></section>
+
+    <section class="project-result"><div class="shell project-result__grid"><p class="eyebrow" data-reveal>(the result)</p><p data-reveal>{project.outcome}</p></div></section>
+
+    <a class="next-project" href={`${base}projects/${nextProject.slug}/`} data-reveal><Scene asset={nextProject.thumbnailImage} label={nextProject.title} /><div class="next-project__overlay"></div><div class="shell next-project__content"><p class="eyebrow">(next project)</p><h2>{nextProject.title} <span aria-hidden="true">→</span></h2></div></a>
+  </article>
 </BaseLayout>

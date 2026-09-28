@@ -1,54 +1,96 @@
 export type Project = {
+  projectNumber: string;
   slug: string;
   title: string;
-  location: string;
   category: string;
-  client: string;
+  service: string;
+  location: string;
   year: string;
-  services: string[];
-  description: string;
-  scene: string;
-  image: string;
-  gallery: string[];
+  clientType: string;
+  shortDescription: string;
+  overview: string;
+  challenge: string;
+  solution: string;
+  outcome: string;
+  heroImage: string;
+  thumbnailImage: string;
+  featureImage: string;
+  galleryImages: string[];
+  featured: boolean;
+  servicesUsed: string[];
+  systemHighlights: string[];
+  technologyPartners?: string[];
 };
 
 export const projects: Project[] = [
   {
-    slug: 'lumé-studio', title: 'Lumé Studio', location: 'Milan, Italy', category: 'Commercial', client: 'Atelier Collective', year: '2023',
-    services: ['Interior Design', 'Lighting Design', 'Space Planning'], scene: 'charcoal', image: 'lVdV1MiB2EiktdICNa5kk9xSeM.jpg',
-    gallery: ['eJXlmLx8FVhzFaA9WBiu4KJayM.jpg', '3iuVVNhVZXaYvpSuWkZKMgkqbq0.jpg', 'yG2WvLgt76HMu9o64a3QvpLAQ.jpg', '0DNp1oc9pZQqQihUidlEslzyyQ.jpg', 'BSVMveDavrtAUExOw4L3lwdRUwA.jpg', 'KBbkCDy6eq8BesLluatGMXSybU.jpg', 'Nr0cGv5jAsCP9LgCGnlJV6L4.jpg'],
-    description: 'A contemporary workspace designed to inspire creativity and focus. Clean lines, layered lighting, and subtle material contrasts define the interior, while a neutral palette enhances calm and productivity. Every element is tailored to reflect the brand’s refined yet forward-thinking identity.'
+    projectNumber: '01', slug: 'whole-home-automation-residence', title: 'Whole Home Automation Residence', category: 'Smart Home Automation', service: 'Whole Home Control', location: 'New York, USA', year: '2026', clientType: 'Private Residence', featured: true,
+    shortDescription: 'A fully connected residence where lighting, climate, entertainment, security and shading work together through one effortless control experience.',
+    overview: 'A residence designed around effortless control, where every important environment responds naturally to the way its owners live.',
+    challenge: 'The homeowners wanted sophisticated technology throughout the property without visible equipment, competing interfaces or complicated controls.',
+    solution: 'A unified control platform was planned around the architecture, bringing lighting, climate, entertainment, shading, security and networking into one intuitive experience.',
+    outcome: 'The completed system disappears naturally into the home while giving the owners confident control over every important environment.',
+    heroImage: 'home_automation_001.png', thumbnailImage: 'outdoor_living_002.jpg', featureImage: 'lighting_001.jpg',
+    galleryImages: ['home_automation_001.png', 'lighting_001.jpg', 'network_wifi_005.jpg', 'outdoor_living_002.jpg'],
+    servicesUsed: ['Smart Home Control', 'Architectural Lighting', 'Automated Shading', 'Whole-Home Audio', 'Integrated Security', 'High-Performance Networking'],
+    systemHighlights: ['Unified Smart Home Control', 'Architectural Lighting', 'Automated Shading', 'Whole-Home Audio', 'Integrated Security', 'High-Performance Networking'], technologyPartners: ['Control4', 'Lutron', 'Sonos']
   },
   {
-    slug: 'the-horizon-residence', title: 'The Horizon Residence', location: 'London, United Kingdom', category: 'Residential', client: 'AURA Development Group', year: '2025',
-    services: ['Interior Design', 'Furniture Curation', 'Styling', 'Lighting Design'], scene: 'sand', image: 'bA6pm3kKCsRbvGPvpS2gO3UANI0.jpg',
-    gallery: ['Dv9ZpRQUkoV6aHlzBWHtly1HvmI.jpg', '10sqFBJRP5YHVjY5b319o4tIMg.jpg', '2pU0YmANVziZ6OALlblvn4hDPc.jpg', '5cBgAIfQocDr0B7qUPiraYUs0.jpg', 'K0miXoasSy6MQOArsNY06rETEj0.jpg', 'pG8CMmZ56WMFehSlxMSd1VTD6EU.jpg', 'vEVUTrAa5uMqScnIPADYTrUIa6k.jpg'],
-    description: 'Each project begins with a deep understanding of the client’s lifestyle and aspirations. From spatial planning to material selection, every detail is carefully considered to create interiors that feel harmonious, timeless, and uniquely personal. The result is a space that reflects both function and emotion — where design meets comfort in perfect balance.'
+    projectNumber: '02', slug: 'architectural-lighting-residence', title: 'Architectural Lighting Residence', category: 'Lighting & Shading', service: 'Lighting & Shading', location: 'Hamptons, USA', year: '2025', clientType: 'Private Residence', featured: true,
+    shortDescription: 'A refined lighting and shading system designed to enhance the home architecture while adapting naturally throughout the day.',
+    overview: 'A calm, layered lighting environment shaped to bring warmth, depth and an effortless daily rhythm to a coastal home.',
+    challenge: 'The architecture relied on natural light and carefully selected materials, so technology needed to remain visually quiet while still offering flexibility.',
+    solution: 'We designed considered lighting scenes and automated shading around the changing daylight, with discreet keypads and simple whole-home control.',
+    outcome: 'The home now shifts naturally from daylight to evening, preserving the architectural intent in every setting.',
+    heroImage: 'lighting_002.jpeg', thumbnailImage: 'lighting_003.jpeg', featureImage: 'shading_soluation_001.jpg',
+    galleryImages: ['lighting_002.jpeg', 'lighting_003.jpeg', 'lighting_004.jpeg', 'lighting_006.webp'],
+    servicesUsed: ['Lighting Control', 'Automated Shading', 'Scene Design', 'Keypad Design'], systemHighlights: ['Daylight-Responsive Shading', 'Layered Lighting Scenes', 'Discreet Architectural Keypads', 'Whole-Home Control'], technologyPartners: ['Lutron', 'Ketra']
   },
   {
-    slug: 'the-verena-residence', title: 'The Verena Residence', location: 'Copenhagen, Denmark', category: 'Residential', client: 'Private Client', year: '2024',
-    services: ['Interior Design', 'Furniture Curation', 'Space Planning', 'Styling'], scene: 'forest', image: 'clANltkimMrgnAQNdfI1xzsQ.jpg',
-    gallery: ['zxZweK7WPniKhlbnyIOpZ5fvY.jpg', 'j17jitGYsXrLRWXvtGm13qWe7o.jpg', 'xcSN57BUo1zcndhjLY4DEeSMfpc.jpg', 'LtwRq28z932cUOht2RFWKeZLoo.jpg', '53Bpdn2be4PHkM3HpWzpQ2gJ4hI.jpg', '8SMYXhL5MrivR0gBzllB6laRpIQ.jpg', 'IA2xyKHjR4uK7CQg6WzW1qLFOU0.jpg'],
-    description: 'A calm, light-filled residence designed to capture the essence of Scandinavian simplicity. Natural textures, warm wood, and soft neutral tones create an atmosphere of understated elegance. Every detail is thoughtfully composed to balance modern functionality with timeless comfort.'
+    projectNumber: '03', slug: 'private-cinema-retreat', title: 'Private Cinema Retreat', category: 'Home Cinema', service: 'Private Cinema', location: 'Connecticut, USA', year: '2025', clientType: 'Private Residence', featured: true,
+    shortDescription: 'A dedicated private cinema combining immersive sound, cinematic projection and intuitive one-touch control.',
+    overview: 'A private cinema retreat that turns an evening at home into a fully immersive, effortlessly controlled experience.',
+    challenge: 'Performance had to be exceptional without turning the room into a collection of visible technology and equipment.',
+    solution: 'Projection, surround sound, lighting and climate were integrated into a single scene-based control system, tailored for both cinema and casual viewing.',
+    outcome: 'The space feels intimate and architectural, while one touch creates a complete cinema experience.',
+    heroImage: 'home_cinema_006.jpg', thumbnailImage: 'home_cinema_007.jpg', featureImage: 'home_cinema_008.jpg',
+    galleryImages: ['home_cinema_006.jpg', 'home_cinema_007.jpg', 'home_cinema_008.jpg', 'home_cinema_003.jpg'],
+    servicesUsed: ['Cinema Design', 'Projection', 'Surround Sound', 'Lighting Control'], systemHighlights: ['4K Projection', 'Immersive Surround Sound', 'One-Touch Cinema Scenes', 'Acoustic Integration'], technologyPartners: ['Sony', 'Control4', 'Bowers & Wilkins']
   },
   {
-    slug: 'arden-boutique-hotel', title: 'Arden Boutique Hotel', location: 'Paris, France', category: 'Hospitality', client: 'Maison Group', year: '2024',
-    services: ['Interior Design', 'Concept Development', 'Furniture Selection', 'Styling'], scene: 'rose', image: 'e3e2Wkwnu8Pu8f0P5wuIZXdUxI.jpg',
-    gallery: ['j9gPKNvPrDwsjhKD8ao16oYL8E.jpg', 'aF5iBP7j57aF5a4euSr4Jr0WTGo.jpg', 'IeMI8BiTkx9i3Rktwp1pNhT9UJI.jpg', 'kOFIFrDfZQM5ZvkJEWJbe9SAo.jpg', 'bXDEOikdx3nU5DNdu8fwapmGnpk.jpg', 'JmVHttnaLPxWPKOPDRxGWPZdxew.jpg', 'WJmQDZXuxWzPzDWX2ZUsSawLLM.jpg'],
-    description: 'An intimate hotel blending classic Parisian charm with contemporary refinement. Soft lighting, tactile fabrics, and tailored detailing create a sense of warmth and quiet sophistication. Each room is designed as a sanctuary — timeless, inviting, and effortlessly elegant.'
+    projectNumber: '04', slug: 'connected-entertainment-residence', title: 'Connected Entertainment Residence', category: 'Home Audio & Entertainment', service: 'Home Audio', location: 'New Jersey, USA', year: '2024', clientType: 'Private Residence', featured: true,
+    shortDescription: 'Whole-home audio and entertainment designed to deliver exceptional performance without interrupting the architecture.',
+    overview: 'An entertaining-focused home where music, television and media follow the family seamlessly from room to room.',
+    challenge: 'The owners wanted serious performance and simple access to every source without compromising the clean lines of the home.',
+    solution: 'We integrated distributed audio, hidden speakers, television and networked media into a calm, room-by-room control experience.',
+    outcome: 'The home now delivers exceptional sound and entertainment exactly where it is wanted, with virtually no visible technology.',
+    heroImage: 'audio_001.jpg', thumbnailImage: 'audio_005.jpg', featureImage: 'audio_003.jpg',
+    galleryImages: ['audio_001.jpg', 'audio_003.jpg', 'audio_005.jpg', 'audio_010.jpg'],
+    servicesUsed: ['Whole-Home Audio', 'Media Rooms', 'Hidden Speakers', 'Networked Entertainment'], systemHighlights: ['Multi-Room Audio', 'Architectural Speakers', 'Unified Media Control', 'High-Resolution Streaming'], technologyPartners: ['Sonos', 'Sonance', 'Control4']
   },
   {
-    slug: 'wavenwood-residence', title: 'Wavenwood Residence', location: 'Colombo, Sri Lanka', category: 'Residenct', client: 'Mr. Perera', year: '2024',
-    services: ['Interior Design', 'Lighting', 'Swimming Pool', 'Garden Design'], scene: 'ocean', image: 'jAdFoKULTO5PhoduohFCGolY5U.jpg',
-    gallery: ['bJNj6NXoXoIvo22mXzc3o9O4wI.jpg', 'HSn12iPO0uUOg0NCERqpiInaWg.jpg', 'xcSN57BUo1zcndhjLY4DEeSMfpc.jpg', 'LtwRq28z932cUOht2RFWKeZLoo.jpg', 'Ccy1uQ02SCJ8HiMkVcGWyTM6alk.jpg', '5cBgAIfQocDr0B7qUPiraYUs0.jpg', '2pU0YmANVziZ6OALlblvn4hDPc.jpg'],
-    description: 'A serene redesign of a private residence focused on natural textures and restrained elegance. The space blends warm timber, soft linens, and diffused lighting to create a calm, livable atmosphere.'
+    projectNumber: '05', slug: 'secure-smart-residence', title: 'Secure Smart Residence', category: 'Security & Surveillance', service: 'Security & Surveillance', location: 'Westchester, USA', year: '2024', clientType: 'Private Residence', featured: false,
+    shortDescription: 'An intelligently integrated security system combining surveillance, controlled access and remote awareness in one simple experience.',
+    overview: 'A discreet residential security system that gives the owners awareness and confidence without placing technology at the forefront.',
+    challenge: 'Security needed to be comprehensive and responsive while feeling as considered as every other element of the home.',
+    solution: 'We connected surveillance, access, gates and alerts to the home control platform, with carefully placed equipment and straightforward remote monitoring.',
+    outcome: 'The owners have a single clear view of their property and a more relaxed, secure daily experience.',
+    heroImage: 'security_surveillance_005.jpg', thumbnailImage: 'security_surveillance_010.jpg', featureImage: 'security_surveillance_015.jpg',
+    galleryImages: ['security_surveillance_005.jpg', 'security_surveillance_010.jpg', 'security_surveillance_015.jpg', 'security_surveillance_027.webp'],
+    servicesUsed: ['Surveillance', 'Access Control', 'Remote Monitoring', 'Integrated Alerts'], systemHighlights: ['Property Surveillance', 'Controlled Access', 'Remote Awareness', 'Integrated Alerts'], technologyPartners: ['IC Realtime', 'Control4']
   },
   {
-    slug: 'ridgeview-loft', title: 'Ridgeview Loft', location: 'Mumbai, India', category: 'Exterior Design', client: 'Sean Parker', year: '2022',
-    services: ['Landscape Design', 'Interior Design', 'Swimming Pool'], scene: 'clay', image: 'XPsGt6oKdp6DF0HC8NCKtWJa20.jpg',
-    gallery: ['CGZmJVnE2KOSOnoGPQF1CqO69w.jpg', '3iuVVNhVZXaYvpSuWkZKMgkqbq0.jpg', 'IeMI8BiTkx9i3Rktwp1pNhT9UJI.jpg', 'kOFIFrDfZQM5ZvkJEWJbe9SAo.jpg', 'Dv9ZpRQUkoV6aHlzBWHtly1HvmI.jpg', '5cBgAIfQocDr0B7qUPiraYUs0.jpg', 'xcSN57BUo1zcndhjLY4DEeSMfpc.jpg'],
-    description: 'A complete transformation of a coastal loft into a modern, sculptural living space. This project balances bold architectural details with minimal décor, delivering a harmonious yet expressive interior.'
+    projectNumber: '06', slug: 'high-performance-connected-home', title: 'High-Performance Connected Home', category: 'Networking & Wi-Fi', service: 'Networking & Wi-Fi', location: 'Long Island, USA', year: '2023', clientType: 'Private Residence', featured: false,
+    shortDescription: 'A professionally engineered network providing reliable high-speed connectivity throughout the residence and surrounding outdoor spaces.',
+    overview: 'A dependable digital foundation for a connected family home, designed to perform as invisibly as the rest of the integrated technology.',
+    challenge: 'The property required reliable coverage inside and out, despite demanding construction materials and a growing number of connected devices.',
+    solution: 'A managed wired and wireless network was planned from the ground up, with access points and equipment positioned for performance and serviceability.',
+    outcome: 'Fast, reliable connectivity now supports work, entertainment, security and outdoor living across the entire property.',
+    heroImage: 'network_wifi_005.jpg', thumbnailImage: 'network_wifi_006.jpg', featureImage: 'outdoor_living_007.jpg',
+    galleryImages: ['network_wifi_005.jpg', 'network_wifi_006.jpg', 'network_wifi_009.png', 'outdoor_living_007.jpg'],
+    servicesUsed: ['Managed Wi-Fi', 'Structured Wiring', 'Outdoor Coverage', 'Network Security'], systemHighlights: ['Whole-Property Wi-Fi', 'Wired Backbone', 'Managed Network', 'Outdoor Connectivity'], technologyPartners: ['Ubiquiti', 'Access Networks']
   }
 ];
 
+export const featuredProjects = projects.filter((project) => project.featured);
 export const bySlug = (slug: string) => projects.find((project) => project.slug === slug);

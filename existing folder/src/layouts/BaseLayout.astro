@@ -3,15 +3,23 @@ import '../styles/global.css';
 import '../styles/reference-overrides.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-const { title = 'Design & Co — Interior Design' } = Astro.props;
+
+const { title = 'Orion | Smart Home Integration Services', favicon = 'white' } = Astro.props;
+const base = import.meta.env.BASE_URL;
 ---
+
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
-    <meta name="description" content="A considered interior design studio portfolio." />
+    <meta name="description" content="Orion provides considered smart-home integration services." />
+    <link rel="icon" href={`${base}orion-favicon-${favicon}.png`} type="image/png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
     <title>{title}</title>
+    <slot name="head" />
   </head>
   <body>
     <Header />
@@ -28,6 +36,24 @@ const { title = 'Design & Co — Interior Design' } = Astro.props;
         });
       }, { threshold: 0.12 });
       targets.forEach((target) => reveal.observe(target));
+    </script>
+    <script>
+      const header = document.querySelector<HTMLElement>('.site-header');
+      const setHeaderState = () => header?.classList.toggle('is-scrolled', window.scrollY > 12);
+      setHeaderState();
+      window.addEventListener('scroll', setHeaderState, { passive: true });
+    </script>
+    <script>
+      import { initMotion } from '../scripts/motion';
+      import { initSmoothScroll } from '../scripts/smooth-scroll';
+      import { initAboutSliders } from '../scripts/about-sliders';
+      import { initContactCta } from '../scripts/contact-cta';
+      import { initAboutEditorial } from '../scripts/about-editorial';
+      initSmoothScroll();
+      initMotion();
+      initAboutSliders();
+      initContactCta();
+      initAboutEditorial();
     </script>
   </body>
 </html>

@@ -1,0 +1,122 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Scene from '../components/Scene.astro';
+
+const base = import.meta.env.BASE_URL;
+const milestones = [
+  ['Designed connected homes across the Northeast', '2026'],
+  ['Expanded our architectural lighting practice', '2025'],
+  ['Built a dedicated systems-design team', '2024'],
+  ['Introduced whole-home support plans', '2023'],
+  ['Completed 60+ considered integrations', '2022']
+];
+const clientNotes = [
+  ['“Everything feels intuitive now. Lighting, music and security simply work together without asking us to think about the technology.”', 'Private homeowner', 'Whole-home integration'],
+  ['“The team coordinated brilliantly with our architect and made complex decisions feel simple from the first plan to final handover.”', 'Residential architect', 'New-build residence'],
+  ['“They gave us the performance we wanted while keeping every detail visually calm and beautifully resolved.”', 'Private homeowner', 'Entertainment upgrade'],
+  ['“The system is powerful, dependable and wonderfully easy to live with. Support has been just as thoughtful as the installation.”', 'Homeowner', 'Coastal renovation']
+];
+const team = [
+  ['Technology Director', 'team-technology-director.webp'],
+  ['Systems Designer', 'team-systems-designer.webp'],
+  ['Project Manager', 'team-project-manager.webp'],
+  ['Integration Specialist', 'team-integration-specialist.webp'],
+  ['Client Support Lead', 'team-client-support-lead.webp']
+];
+---
+
+<BaseLayout title="About | Orion" favicon="black">
+  <div class="about-editorial" data-about-editorial>
+    <section class="about-editorial__intro">
+      <div class="shell about-editorial__intro-inner" data-reveal>
+        <p class="about-editorial__brand">Orion</p>
+        <h1>About Us</h1>
+        <p>We are a design-led technology partner creating intelligent homes with purpose, clarity and a deep respect for the way people live.</p>
+        <div class="about-editorial__intro-tags" aria-label="Our focus"><span>Smart home integration</span><span>Architectural technology</span></div>
+      </div>
+    </section>
+
+    <section class="about-editorial__gallery" aria-label="Orion environments" data-about-gallery data-about-gallery-carousel>
+      <div class="about-editorial__gallery-track">
+        <div class="about-editorial__gallery-set is-active">
+          <figure><Scene asset="lighting_002.jpeg" label="Warm architectural lighting" /></figure>
+          <figure><Scene asset="audio_001.jpg" label="Integrated entertainment room" /></figure>
+          <figure><Scene asset="outdoor_living_001.jpg" label="Connected outdoor living space" /></figure>
+        </div>
+        <div class="about-editorial__gallery-set">
+          <figure><Scene asset="lighting_001.jpg" label="Architectural lighting and control" /></figure>
+          <figure><Scene asset="home_cinema_006.jpg" label="Private cinema and media room" /></figure>
+          <figure><Scene asset="network_wifi_006.jpg" label="Reliable home networking" /></figure>
+        </div>
+        <div class="about-editorial__gallery-set">
+          <figure><Scene asset="audio_003.jpg" label="High-performance home audio" /></figure>
+          <figure><Scene asset="outdoor_living_002.jpg" label="Integrated outdoor residence" /></figure>
+          <figure><Scene asset="security_surveillance_034.jpg" label="Discreet home security" /></figure>
+        </div>
+      </div>
+      <div class="about-editorial__gallery-controls" aria-label="Gallery controls">
+        <button class="about-editorial__gallery-arrow about-editorial__gallery-arrow--previous" type="button" aria-label="Previous gallery images">&larr;</button>
+        <div class="about-editorial__gallery-dots" aria-label="Gallery slides">
+          <button class="is-active" type="button" aria-label="Show gallery set 1" aria-current="true"></button>
+          <button type="button" aria-label="Show gallery set 2" aria-current="false"></button>
+          <button type="button" aria-label="Show gallery set 3" aria-current="false"></button>
+        </div>
+        <button class="about-editorial__gallery-arrow about-editorial__gallery-arrow--next" type="button" aria-label="Next gallery images">&rarr;</button>
+      </div>
+    </section>
+
+    <section class="about-editorial__milestones">
+      <div class="shell">
+        <div class="about-editorial__milestones-heading" data-reveal>
+          <div><p class="eyebrow">(our history)</p><h2>Our ongoing milestones</h2></div>
+          <p>Our work grows through close collaboration: bringing architecture, technology and everyday living together in one clear, dependable experience.</p>
+        </div>
+        <ol class="about-editorial__milestones-list">
+          {milestones.map(([title, year]) => <li data-reveal><span aria-hidden="true">✦</span><strong>{title}</strong><time>{year}</time></li>)}
+        </ol>
+      </div>
+    </section>
+
+    <section class="about-editorial__purpose">
+      <div class="shell about-editorial__purpose-grid">
+        <div class="about-editorial__purpose-copy" data-reveal>
+          <p class="eyebrow">(our philosophy)</p>
+          <h2>Designed with care.<br />Built around life.</h2>
+          <p>We are more than system installers—we are partners in shaping spaces that feel effortless to live in. Every choice is guided by thoughtful planning, dependable performance and a commitment to details that endure.</p>
+          <ul><li>Technology tailored to your home, goals and lifestyle.</li><li>Every decision considered from first sketch to final handover.</li></ul>
+        </div>
+        <div class="about-editorial__purpose-images" data-about-collage>
+          <figure><Scene asset="home_cinema_006.jpg" label="Private cinema integration" /></figure>
+          <figure><Scene asset="lighting_001.jpg" label="Architectural lighting and control" /></figure>
+          <figure><Scene asset="outdoor_living_002.jpg" label="Integrated outdoor residence" /></figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="about-editorial__voices">
+      <div class="shell">
+        <div class="about-editorial__section-heading" data-reveal><p class="eyebrow">(client voices)</p><h2>Trusted in the details.</h2><p>Feedback from homeowners and collaborators who have experienced the result of an Orion project.</p></div>
+        <div class="about-editorial__voices-carousel" data-about-voices-carousel aria-roledescription="carousel" aria-label="Client reviews">
+          <div class="about-editorial__voices-viewport">
+            <div class="about-editorial__voices-grid" data-about-voices>
+              {clientNotes.map(([quote, name, role], index) => <article aria-roledescription="slide" aria-label={`Review ${index + 1} of ${clientNotes.length}`}><div aria-hidden="true">★★★★★</div><blockquote>{quote}</blockquote><footer><strong>{name}</strong><span>{role}</span></footer></article>)}
+            </div>
+          </div>
+          <div class="about-editorial__voices-pagination" aria-label="Review pagination">
+            {clientNotes.map((_, index) => <button class:list={{ 'is-active': index === 0 }} type="button" aria-label={`Show review ${index + 1}`} aria-current={index === 0 ? 'true' : 'false'}></button>)}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="about-editorial__team">
+      <div class="shell about-editorial__team-surface">
+        <div class="about-editorial__team-heading" data-reveal><h2>Meet the people behind<br />the experience.</h2><p>Exceptional home technology is a team effort. We collaborate closely to make every detail feel simple, elegant and ready for the future.</p></div>
+        <div class="about-editorial__team-grid" data-about-team>
+          {team.map(([role, image]) => <article><Scene asset={image} label={role} /><span>{role}</span></article>)}
+        </div>
+        <div class="about-editorial__team-cta" data-reveal><div><strong>Let’s shape something considered.</strong><p>Tell us about your home, renovation or next project.</p></div><a class="pill-button" href={`${base}contact/`}>Start a Conversation <span aria-hidden="true">↗</span></a></div>
+      </div>
+    </section>
+  </div>
+</BaseLayout>

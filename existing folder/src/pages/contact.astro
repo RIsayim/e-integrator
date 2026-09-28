@@ -1,0 +1,39 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Scene from '../components/Scene.astro';
+---
+
+<BaseLayout title="Contact | Orion">
+  <section class="project-showcase-hero">
+    <Scene asset="audio_001.jpg" loading="eager" label="Integrated home entertainment space" />
+    <div class="shell project-showcase-hero__content" data-reveal>
+      <div class="project-showcase-hero__copy">
+      <h1>Let’s create a home that works beautifully around you.</h1>
+      <p>Tell us about your new build, renovation or technology upgrade. We’ll help you take the next step with clarity.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="contact-page-details">
+    <div class="shell contact-page-details__grid">
+      <div class="contact-page-details__intro" data-reveal>
+        <p class="eyebrow">(get in touch)</p>
+        <h2>Start with a<br />simple conversation.</h2>
+        <p>We work closely with homeowners, architects and designers from first ideas through to long-term support.</p>
+        <dl>
+          <div><dt>Email</dt><dd><a href="mailto:hello@eintegrator.com">hello@eintegrator.com</a></dd></div>
+          <div><dt>Phone</dt><dd><a href="tel:+15550147920">+1 555 014 7920</a></dd></div>
+          <div><dt>Studio</dt><dd>New York, USA</dd></div>
+        </dl>
+      </div>
+      <form class="contact-page-form" action="mailto:hello@eintegrator.com" method="post" enctype="text/plain" data-reveal>
+        <label>Name<input name="Name" autocomplete="name" placeholder="Your name" required /></label>
+        <label>Email<input name="Email" type="email" autocomplete="email" placeholder="you@example.com" required /></label>
+        <label>Phone<input name="Phone" type="tel" autocomplete="tel" placeholder="Your phone number" /></label>
+        <label>Project type<select name="Project type"><option>New construction</option><option>Renovation</option><option>Smart home upgrade</option><option>Home cinema</option><option>Lighting &amp; shading</option><option>Security &amp; access</option><option>Network &amp; Wi-Fi</option></select></label>
+        <label class="contact-page-form__message">Tell us about your project<textarea name="Project details" rows="5" placeholder="Your home, timeline and the technology you are considering"></textarea></label>
+        <button class="pill-button" type="submit">Send Enquiry <span aria-hidden="true">↗</span></button>
+      </form>
+    </div>
+  </section>
+</BaseLayout>
